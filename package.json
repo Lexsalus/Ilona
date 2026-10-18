@@ -9,7 +9,8 @@
     "bump": "node tools/bump.js",
     "panel": "node tools/serve-local.js",
     "serve": "node tools/serve-local.js",
-    "check-site": "node tools/check-site.js"
+    "check-site": "node tools/check-site.js",
+    "paczka": "node tools/pack.js"
   },
   "engines": {
     "node": ">=22.13"

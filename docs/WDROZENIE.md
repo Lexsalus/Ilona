@@ -80,18 +80,74 @@ Aktualizacja czatu = push do `main`; strona kliniki nie wymaga żadnych zmian. G
 
 ### Własny serwer (np. hosting strony kliniki)
 
-Czat to zwykłe pliki statyczne. Na serwer kopiujesz:
+Czat to zwykłe pliki statyczne (ok. 160 KB) — działa z dowolnego folderu na dowolnym serwerze, bez PHP, bazy i konfiguracji. Wszystkie pliki ładują się względem adresu `embed.js`, więc w kodzie nic nie trzeba zmieniać.
+
+**Zalety:** czat ładuje się z tej samej domeny co strona (bez GitHub Pages, bez CORS, prostsze RODO i CSP). **Wada:** aktualizacje nie są automatyczne — każdą zmianę wgrywa się ręcznie.
+
+#### Krok 1. Przygotuj paczkę
+
+W katalogu repozytorium:
+
+```
+npm test          # testy muszą przejść
+npm run paczka    # tworzy folder paczka/ilona/
+```
+
+W `paczka/ilona/` są tylko pliki potrzebne pacjentom:
 
 ```
 embed.js
 settings.json
-chat/            (cały folder)
-test.html        (opcjonalnie — strona testowa)
+chat/            (cały folder: core, engine, settings, ui, img, …)
+WGRAJ.txt        (krótka instrukcja — na serwer nie jest potrzebny)
 ```
 
-Nie kopiujesz: `panel/server/`, `panel/backups/`, `tools/`, `docs/`, `.git/`, `.github/`. Folder `panel/` (podgląd demo) jest opcjonalny.
+Bez narzędzia — skopiuj ręcznie te same trzy pozycje: `embed.js`, `settings.json`, `chat/`. **Nie kopiuj** `panel/`, `tools/`, `docs/`, `demo/`, `.git/`, `.github/`, `node_modules/` ani `test.html` (panel na serwerze publicznym jest niepotrzebny, a `panel/server/` to kod Workera, nie strony).
 
-W znaczniku na stronie podajesz adres swojego serwera, np. `<script src="https://lekarzeiterapeuci.pl/ilona/embed.js" defer></script>`. Przy źródle ustawień „plik” po każdej zmianie w panelu kopiujesz ponownie tylko `settings.json`; po zmianie kodu — cały folder `chat/` i `embed.js`.
+#### Krok 2. Wgraj na serwer
+
+Utwórz na serwerze folder, np. `/ilona/`, i wgraj do niego **całą zawartość** `paczka/ilona/` z zachowaniem struktury folderów. Sposób zależy od hostingu:
+
+- **FTP / SFTP** (FileZilla, WinSCP): połącz się z serwerem, przejdź do katalogu głównego strony (zwykle `public_html/`, `www/` lub `htdocs/`), utwórz `ilona/` i przeciągnij do niego pliki.
+- **Panel hostingu** (cPanel, DirectAdmin, panel home.pl/nazwa.pl itp.): Menedżer plików → katalog strony → nowy folder `ilona` → wgraj ZIP z zawartością `paczka/ilona/` → „Rozpakuj”.
+- **WordPress:** pliki wgrywa się przez FTP lub menedżer plików hostingu (np. do `public_html/ilona/`), nie przez „Media” — biblioteka mediów nie przyjmie plików `.js`.
+
+Sprawdzenie: adres `https://lekarzeiterapeuci.pl/ilona/embed.js` musi otwierać w przeglądarce kod skryptu (a nie błąd 404), a `https://lekarzeiterapeuci.pl/ilona/settings.json` — ustawienia.
+
+#### Krok 3. Wstaw znacznik na stronę
+
+Przed `</body>` (w WordPressie: motyw → stopka, albo wtyczka typu „Insert Headers and Footers” / „WPCode”):
+
+```html
+<script src="/ilona/embed.js" defer></script>
+```
+
+Jeśli na stronie był już znacznik z `github.io` — **zamień** go (dwa znaczniki = dwa okna czatu). Atrybuty `data-*` (rozdział 1) działają tak samo.
+
+#### Krok 4. Sprawdź
+
+1. Otwórz stronę w oknie prywatnym (bez starej pamięci podręcznej).
+2. Kliknij przycisk czatu, wpisz „cześć” — powinny pojawić się kafelki usług z cenami.
+3. Wpisz „nie mogę oddychać” — musi pojawić się czerwona karta z przyciskiem „Zadzwoń 112”.
+4. W konsoli przeglądarki (F12) nie może być błędów `[Ilona]`.
+
+#### Aktualizacje
+
+| Co się zmieniło | Co wgrać ponownie |
+|---|---|
+| ustawienia w panelu (źródło „plik”) | tylko `settings.json` (panel zapisuje go w repozytorium) |
+| nowa wersja czatu (kod) | `npm run paczka` i całą zawartość `paczka/ilona/` (nadpisz pliki) |
+| ustawienia przy serwerze panelu (Cloudflare) | nic — czat pobiera je na żywo z bazy |
+
+Po wgraniu przeglądarki pacjentów mogą przez chwilę używać starych plików z pamięci podręcznej (zależnie od ustawień serwera — zwykle do kilku godzin). Numer wersji jest w `chat/version.js` i w pliku `WGRAJ.txt` paczki.
+
+#### Najczęstsze problemy
+
+- **Czat się nie pojawia, w konsoli 404** — zły adres w `src` albo pliki w złym folderze (np. `ilona/ilona/embed.js`). Sprawdź adres `…/ilona/embed.js` w przeglądarce.
+- **Błąd „MIME type” przy plikach `.js`** — serwer musi wysyłać `.js` jako `text/javascript` (standard; w razie problemu w `.htaccess`: `AddType text/javascript .js`).
+- **Brak ikon/logo** — nie wgrał się folder `chat/img/`.
+- **Czat na innej domenie niż strona** (np. `cdn.…`) — ustaw dla plików czatu nagłówek `Access-Control-Allow-Origin` (rozdział 3).
+- **Strona ma CSP** — host czatu to wtedy domena strony (`'self'`), więc zwykle nic nie trzeba dopisywać.
 
 ---
 

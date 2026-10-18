@@ -11,6 +11,11 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 <!-- NEW ENTRIES BELOW -->
 
+## 2026-10-18
+
+### 1.1.1
+- Instrukcja wgrania czatu na własny serwer (docs/WDROZENIE.md) i polecenie npm run paczka
+
 ## 2026-10-15
 
 ### 1.1.0

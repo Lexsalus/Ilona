@@ -57,6 +57,7 @@ Wymagany [Node.js](https://nodejs.org) 22.13+ (wersja LTS). Projekt nie ma zale�
 | `npm test` | testy (m.in. 38 testów akceptacyjnych ze specyfikacji) |
 | `npm run check` | zgodność wersji z `CHANGES.md` |
 | `npm run bump -- <patch\|minor\|major> "Opis"` | nowa wersja + wpis w `CHANGES.md` |
+| `npm run paczka` | paczka czatu do wgrania na własny serwer (`paczka/ilona/`) |
 | `npm run check-site` | kontrola strony kliniki (linki, ceny, telefon, godziny) |
 
 Każda zmiana: `npm test` → `npm run bump -- patch "Opis zmiany"` → commit → push. Strona aktualizuje się sama po ok. minucie, a jeśli testy nie przejdą, publikacja jest wstrzymana.

@@ -6,4 +6,5 @@ node_modules/
 Thumbs.db
 .site-check.json
 panel/backups/
+paczka/
 settings.json.tmp
