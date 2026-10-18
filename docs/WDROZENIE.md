@@ -127,7 +127,7 @@ Jeśli na stronie był już znacznik z `github.io` — **zamień** go (dwa znacz
 #### Krok 4. Sprawdź
 
 1. Otwórz stronę w oknie prywatnym (bez starej pamięci podręcznej).
-2. Kliknij przycisk czatu, wpisz „cześć” — powinny pojawić się kafelki usług z cenami.
+2. Kliknij przycisk czatu, podaj imię, wpisz „cześć” — powinny pojawić się kafelki usług z cenami.
 3. Wpisz „nie mogę oddychać” — musi pojawić się czerwona karta z przyciskiem „Zadzwoń 112”.
 4. W konsoli przeglądarki (F12) nie może być błędów `[Ilona]`.
 

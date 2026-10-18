@@ -36,7 +36,7 @@ writeFileSync(
     '2. Na stronie, przed </body>, wklej jedną linijkę:',
     '   <script src="/ilona/embed.js" defer></script>',
     '   (jeśli wcześniej był adres github.io — zamień go na ten).',
-    '3. Sprawdź: otwórz stronę, kliknij przycisk czatu, wpisz „cześć”.',
+    '3. Sprawdź: otwórz stronę, kliknij przycisk czatu, podaj imię, wpisz „cześć”.',
     '',
     'Aktualizacja ustawień (źródło „plik”): wgraj ponownie tylko settings.json.',
     'Aktualizacja wersji czatu: wgraj ponownie wszystko (nadpisz pliki).',
