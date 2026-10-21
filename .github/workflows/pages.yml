@@ -1,4 +1,4 @@
-# Publikacja czatu na GitHub Pages (adres: https://lekarzeiterapeuci.github.io/Ilona/).
+# Publikacja czatu na GitHub Pages (adres: https://lexsalus.github.io/Ilona/).
 # Uruchamia się przy każdym pushu na main. Przed publikacją sprawdza wersję i testy —
 # jeśli coś nie przechodzi, strona zostaje w poprzedniej (działającej) wersji.
 name: Publikacja na GitHub Pages

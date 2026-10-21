@@ -26,7 +26,7 @@ Komputer administratora               (opcjonalnie) Cloudflare                St
 │ npm run panel        │  /admin/*   │  ustawienia · rejestr rozmów│ /config│ u pacjenta       │
 │ 127.0.0.1:5050       │             │  kontrola strony (codziennie)│  /log  └──────────────────┘
 └──────────┬───────────┘             └─────────────────────────────┘                 ▲
-           │ zapis settings.json → git push → GitHub Pages (lekarzeiterapeuci.github.io/Ilona) ┘
+           │ zapis settings.json → git push → GitHub Pages (lexsalus.github.io/Ilona) ┘
 ```
 
 - **Czat** (`chat/`, `embed.js`) działa w przeglądarce pacjenta. Przy starcie wczytuje ustawienia: z serwera panelu (jeśli podany), w przeciwnym razie z pliku `settings.json` obok skryptu, a gdy go nie ma — z wartości domyślnych.
@@ -43,7 +43,7 @@ Komputer administratora               (opcjonalnie) Cloudflare                St
 2. Pobierz projekt:
 
    ```powershell
-   git clone https://github.com/lekarzeiterapeuci/Ilona
+   git clone https://github.com/Lexsalus/Ilona
    ```
 
 **Za każdym razem** (terminal w folderze projektu):
@@ -118,7 +118,7 @@ Na końcu pojawi się adres, np. `https://lekarze-panel.twoja-nazwa.workers.dev`
 
 **Logowanie:** panel → **Serwer panelu** → adres + hasło → **Połącz**. Hasło jest pamiętane tylko do zamknięcia karty.
 
-W `wrangler.toml` ustaw też `ALLOWED_ORIGINS` — domeny stron, z których czat może zapisywać rozmowy (domyślnie lekarzeiterapeuci.pl, www.lekarzeiterapeuci.pl, lekarzeiterapeuci.github.io i localhost).
+W `wrangler.toml` ustaw też `ALLOWED_ORIGINS` — domeny stron, z których czat może zapisywać rozmowy (domyślnie lekarzeiterapeuci.pl, www.lekarzeiterapeuci.pl, lexsalus.github.io i localhost).
 
 ---
 

@@ -22,13 +22,13 @@ Jak osadzić czat Ilona na stronie www, gdzie go hostować, jak zbudowany jest k
 Jedna linijka przed `</body>` na wszystkich podstronach (zwykle w szablonie stopki):
 
 ```html
-<script src="https://lekarzeiterapeuci.github.io/Ilona/embed.js" defer></script>
+<script src="https://lexsalus.github.io/Ilona/embed.js" defer></script>
 ```
 
 Z serwerem panelu (ustawienia na żywo + rejestr rozmów — [ADMINISTRATOR.md](ADMINISTRATOR.md#4-serwer-panelu-cloudflare)):
 
 ```html
-<script src="https://lekarzeiterapeuci.github.io/Ilona/embed.js"
+<script src="https://lexsalus.github.io/Ilona/embed.js"
         data-panel="https://lekarze-panel.TWOJE-KONTO.workers.dev" defer></script>
 ```
 
@@ -68,7 +68,7 @@ Na lekarzeiterapeuci.pl jest już widżet czatu na żywo. Jeśli oba mają dzia�
 
 ### GitHub Pages (zalecane)
 
-Workflow `.github/workflows/pages.yml` publikuje repozytorium pod `https://lekarzeiterapeuci.github.io/Ilona/` przy każdym pushu na `main`:
+Workflow `.github/workflows/pages.yml` publikuje repozytorium pod `https://lexsalus.github.io/Ilona/` przy każdym pushu na `main`:
 
 1. uruchamia kontrolę wersji (`tools/check-version.js`) i testy (`tools/test.js`) — **jeśli coś nie przechodzi, strona zostaje w poprzedniej wersji**,
 2. usuwa części niepubliczne (`panel/server`, `tools`, `docs`, `.github`),
@@ -156,7 +156,7 @@ Po wgraniu przeglądarki pacjentów mogą przez chwilę używać starych plików
 - **Przeglądarki:** współczesne (ES modules, Shadow DOM, `fetch`) — Chrome, Edge, Firefox, Safari z ostatnich lat. Bez bibliotek zewnętrznych i bez kroku budowania.
 - **Izolacja:** czat renderuje się w **Shadow DOM** — style strony nie psują czatu, a style czatu nie wpływają na stronę. Cały tekst wstawiany jest przez `textContent` (nigdy `innerHTML`).
 - **Content-Security-Policy** (jeśli strona ją ma) musi dopuszczać:
-  - `script-src` — host czatu (np. `https://lekarzeiterapeuci.github.io`),
+  - `script-src` — host czatu (np. `https://lexsalus.github.io`),
   - `style-src` — ten sam host (style ładowane jako plik CSS do Shadow DOM),
   - `img-src` — ten sam host oraz `data:` (logo/miniatura wgrane w panelu),
   - `connect-src` — host czatu (`settings.json`) i — jeśli używany — serwer panelu (`*.workers.dev`).

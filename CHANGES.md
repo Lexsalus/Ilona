@@ -11,6 +11,11 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 <!-- NEW ENTRIES BELOW -->
 
+## 2026-10-21
+
+### 1.1.2
+- Nowy adres po zmianie nazwy konta GitHub: lexsalus.github.io/Ilona
+
 ## 2026-10-18
 
 ### 1.1.1

@@ -18,7 +18,7 @@ crons = ["17 3 * * *"]
 
 [vars]
 # Strony, z których widżet może wysyłać wpisy do rejestru (po przecinku, bez ukośnika na końcu).
-ALLOWED_ORIGINS = "https://lekarzeiterapeuci.pl,https://www.lekarzeiterapeuci.pl,https://lekarzeiterapeuci.github.io,http://localhost:5050,http://127.0.0.1:5050"
+ALLOWED_ORIGINS = "https://lekarzeiterapeuci.pl,https://www.lekarzeiterapeuci.pl,https://lexsalus.github.io,http://localhost:5050,http://127.0.0.1:5050"
 # Skąd może działać panel administratora — tylko z Twojego komputera (npm run panel).
 ADMIN_ORIGINS = "http://localhost:5050,http://127.0.0.1:5050"
 # Opcjonalnie: tylko te adresy IP mogą wejść do /admin (dla innych 404). Sprawdź swój IP np. na https://ifconfig.me

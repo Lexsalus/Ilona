@@ -10,10 +10,10 @@ Wirtualna konsultantka **Ilona** pomaga pacjentom serwisu [lekarzeiterapeuci.pl]
 Jedna linijka przed `</body>` (szczegóły: [docs/WDROZENIE.md](docs/WDROZENIE.md)):
 
 ```html
-<script src="https://lekarzeiterapeuci.github.io/Ilona/embed.js" defer></script>
+<script src="https://lexsalus.github.io/Ilona/embed.js" defer></script>
 ```
 
-Podgląd strony kliniki z czatem Ilona: `https://lekarzeiterapeuci.github.io/Ilona/` (prowadzi do `demo/`). Strona testowa czatu: `https://lekarzeiterapeuci.github.io/Ilona/test.html`
+Podgląd strony kliniki z czatem Ilona: `https://lexsalus.github.io/Ilona/` (prowadzi do `demo/`). Strona testowa czatu: `https://lexsalus.github.io/Ilona/test.html`
 
 ## Dokumentacja
 

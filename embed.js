@@ -1,7 +1,7 @@
 /*
  * Czat „Ilona” — lekarzeiterapeuci.pl. Jedyny skrypt, który wkleja się na stronę www.
  * Wklej na stronie (np. przed </body>):
- *   <script src="https://lekarzeiterapeuci.github.io/Ilona/embed.js" defer></script>
+ *   <script src="https://lexsalus.github.io/Ilona/embed.js" defer></script>
  * Atrybuty opcjonalne:
  *   data-panel="https://…workers.dev"  — serwer panelu (ustawienia na żywo + rejestr rozmów);
  *                                         bez niego czat czyta settings.json obok tego skryptu
