@@ -236,6 +236,8 @@
 .log {
   flex: 1;
   overflow-y: auto;
+  /* Nigdy poziomego paska: paski cieni przy ostatniej kolumnie kafelków są przycinane na krawędzi. */
+  overflow-x: hidden;
   padding: 16px 16px 10px;
   display: flex;
   flex-direction: column;
