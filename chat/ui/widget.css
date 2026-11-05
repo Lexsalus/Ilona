@@ -234,14 +234,8 @@
 .win-actions .close { width: 36px; height: 36px; }
 .win-actions .close svg { width: 18px; height: 18px; }
 
-/* Pełny ekran (przycisk „□”): okno na całą stronę, treść rozmowy w czytelnej szerokości na środku. */
-.floating.maximized.open { inset: 0; }
-.maximized .panel { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; }
-.maximized .log,
-.maximized .composer,
-.maximized .sos { padding-left: max(16px, calc((100% - 820px) / 2)); padding-right: max(16px, calc((100% - 820px) / 2)); }
-.maximized .header { padding-left: max(20px, calc((100% - 860px) / 2)); padding-right: max(16px, calc((100% - 860px) / 2)); }
-.maximized .intro { padding-left: max(26px, calc((100% - 520px) / 2)); padding-right: max(26px, calc((100% - 520px) / 2)); }
+/* Przycisk pełnego ekranu „□” — tylko na telefonie (na komputerze ukryty). */
+.maximize { display: none; }
 .close svg { width: 20px; height: 20px; }
 
 /* ---------- Wiadomości ---------- */
@@ -562,8 +556,9 @@
   .floating.left { left: 12px; }
   .floating.open { inset: 0; }
   .floating .panel { width: 100vw; height: 100dvh; border-radius: 0; border: 0; }
-  /* Na telefonie czat i tak zajmuje cały ekran — przycisk pełnego ekranu jest zbędny. */
-  .maximize { display: none; }
+  /* Na telefonie czat zajmuje cały ekran; przycisk „□” jest widoczny tylko tutaj. */
+  .maximize { display: grid; }
+  .floating.maximized.open { inset: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .open .panel, .msg.enter, .typing i { animation: none; }

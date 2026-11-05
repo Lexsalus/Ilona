@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.9
+- Przycisk pełnego ekranu tylko na telefonie (na komputerze ukryty)
+
 ### 1.2.8
 - Przycisk pełnego ekranu „□” (ponowne kliknięcie przywraca rozmiar); treść na środku w czytelnej szerokości; zwarty nagłówek z trzema przyciskami
 
