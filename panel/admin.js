@@ -1046,7 +1046,7 @@ function renderTilesCfg() {
     applyPreview({ ...t, iconSize: Number(ic.value) });
   });
   ic.addEventListener('change', () => setTiles({ ...t, iconSize: Number(ic.value) }));
-  const icLab = labelSpan('Wielkość ikon ', `Wielkość kwadracika z ikoną usługi (${TILE_ICON_MIN}–${TILE_ICON_MAX} px, domyślnie ${DEFAULT_TILES.iconSize} px — największa). Ikona w środku zmienia się proporcjonalnie.`);
+  const icLab = labelSpan('Wielkość ikon ', `Wielkość kwadracika z ikoną usługi (${TILE_ICON_MIN}–${TILE_ICON_MAX} px, domyślnie ${DEFAULT_TILES.iconSize} px). Ikona w środku zmienia się proporcjonalnie.`);
   icLab.append(icVal);
   icF.append(icLab, ic);
   form.append(icF);

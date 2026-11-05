@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.4
+- Domyślna wielkość ikon na kafelkach: 28 px
+
 ### 1.2.3
 - Okno czatu bez poziomego paska przewijania (cienie kafelków przy prawej krawędzi są przycinane)
 

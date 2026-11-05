@@ -95,7 +95,7 @@ Czerwony kolor jest zarezerwowany dla przycisku 112. Po zmianie ceny sprawdź w 
 
 ### Wygląd kafelków (wysokość, wyśrodkowanie, czcionka)
 
-**Usługi i przyciski** → sekcja **Wygląd kafelków**: *Dopasuj wysokość do zawartości*, *Pojedynczy kafelek dopasowany do treści* (domyślnie włączone), *Cienie pod kafelkami* (kolorowy cień pod kafelkiem; domyślnie włączone), *Wyśrodkuj w poziomie* / *w pionie*, *Równe odstępy w pionie*, *Szerokość dopasowana do tekstu*, *Bez przenoszenia pojedynczych liter*, wielkość czcionki, **wielkość ikon** (domyślnie największa — można je zmniejszyć), **odległość ikony od napisu** (automatycznie albo stała, w pikselach), marginesy i kolejność kafelków (np. najtańsze najpierw). Każdą zmianę od razu widać w podglądzie czatu.
+**Usługi i przyciski** → sekcja **Wygląd kafelków**: *Dopasuj wysokość do zawartości*, *Pojedynczy kafelek dopasowany do treści* (domyślnie włączone), *Cienie pod kafelkami* (kolorowy cień pod kafelkiem; domyślnie włączone), *Wyśrodkuj w poziomie* / *w pionie*, *Równe odstępy w pionie*, *Szerokość dopasowana do tekstu*, *Bez przenoszenia pojedynczych liter*, wielkość czcionki, **wielkość ikon** (12–32 px, domyślnie 28 px), **odległość ikony od napisu** (automatycznie albo stała, w pikselach), marginesy i kolejność kafelków (np. najtańsze najpierw). Każdą zmianę od razu widać w podglądzie czatu.
 
 ### Słowa alarmowe (112) — dopisanie albo wyłączenie
 

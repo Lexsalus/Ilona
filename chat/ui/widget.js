@@ -526,7 +526,7 @@ export function applyTileStyle(node, t) {
   node.classList.toggle('tiles-single-fit', t.singleFit !== false);
   node.classList.toggle('tiles-shadow', t.shadow !== false);
   // Ikona: rozmiar (px) i — gdy ustawiona — stała odległość od nazwy usługi.
-  node.style.setProperty('--ico-size', `${t.iconSize || 32}px`);
+  node.style.setProperty('--ico-size', `${t.iconSize || 28}px`);
   const gap = Number.isFinite(t.iconGap) ? t.iconGap : null;
   node.classList.toggle('tiles-icogap', gap !== null);
   if (gap !== null) node.style.setProperty('--ico-gap', `${gap}px`);

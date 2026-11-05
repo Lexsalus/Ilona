@@ -349,7 +349,7 @@ expect('panel: kafelki — domyślnie bez zmian', JSON.stringify(sanitizeConfig(
   expect('panel: kafelki — pojedynczy kafelek dopasowany domyślnie (zapis tylko wyłączenia)', !('singleFit' in sanitizeConfig({ tiles: { singleFit: true } }).tiles) && sanitizeConfig({ tiles: { singleFit: false } }).tiles.singleFit === false);
   expect('panel: kafelki — wyśrodkowanie (stare „center” = oba) i czcionka (10–20 px)', tf.centerH && tf.centerV && tf.fontSize === 20 && sanitizeConfig({ tiles: { fontSize: 11.3 } }).tiles.fontSize === 11.5 && !('fontSize' in sanitizeConfig({ tiles: { fontSize: 13.5 } }).tiles), tf);
   const ti = sanitizeConfig({ tiles: { iconSize: 99, iconGap: 50 } }).tiles;
-  expect('panel: kafelki — wielkość ikon (12–32 px) i odległość od napisu (0–30 px)', ti.iconSize === 32 - 0 && ti.iconGap === 30 && sanitizeConfig({ tiles: { iconSize: 5 } }).tiles.iconSize === 12 && !('iconSize' in sanitizeConfig({ tiles: { iconSize: 32 } }).tiles) && !('iconGap' in sanitizeConfig({ tiles: { iconGap: null } }).tiles) && sanitizeConfig({ tiles: { iconGap: 0 } }).tiles.iconGap === 0, ti);
+  expect('panel: kafelki — wielkość ikon (12–32 px) i odległość od napisu (0–30 px)', ti.iconSize === 32 - 0 && ti.iconGap === 30 && sanitizeConfig({ tiles: { iconSize: 5 } }).tiles.iconSize === 12 && !('iconSize' in sanitizeConfig({ tiles: { iconSize: 28 } }).tiles) && !('iconGap' in sanitizeConfig({ tiles: { iconGap: null } }).tiles) && sanitizeConfig({ tiles: { iconGap: 0 } }).tiles.iconGap === 0, ti);
   const tv = sanitizeConfig({ tiles: { sym: 'vertical', padding: { t: 6, b: 18, l: 2, r: 30 } } }).tiles;
   expect('panel: kafelki — symetria pionowa (dół = góra)', tv.padding.b === 6 && tv.padding.l === 2 && tv.padding.r === 24, tv);
 }

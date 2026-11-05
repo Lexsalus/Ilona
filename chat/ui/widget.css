@@ -390,14 +390,14 @@
 .tile-ico {
   display: grid;
   place-items: center;
-  width: var(--ico-size, 32px);
-  height: var(--ico-size, 32px);
-  border-radius: calc(var(--ico-size, 32px) * 0.28);
+  width: var(--ico-size, 28px);
+  height: var(--ico-size, 28px);
+  border-radius: calc(var(--ico-size, 28px) * 0.28);
   background: color-mix(in srgb, currentColor 16%, transparent);
   flex: none;
 }
 .tile.outline .tile-ico { background: color-mix(in srgb, var(--k) 11%, var(--surface)); }
-.tile-ico svg { width: calc(var(--ico-size, 32px) * 0.5625); height: calc(var(--ico-size, 32px) * 0.5625); }
+.tile-ico svg { width: calc(var(--ico-size, 28px) * 0.5625); height: calc(var(--ico-size, 28px) * 0.5625); }
 /* Stała odległość ikony od nazwy (panel): nazwa tuż pod ikoną, cena przy dolnej krawędzi. */
 .tiles-icogap .tile:not(.cta) { justify-content: flex-start; }
 .tiles-icogap .tile-ico { margin-bottom: calc(var(--ico-gap, 7px) - 7px); }

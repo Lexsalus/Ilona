@@ -173,7 +173,7 @@ function cleanButtons(input) {
 export const TILE_PADDING_MAX = 24;
 export const TILE_FONT_MIN = 10;
 export const TILE_FONT_MAX = 20;
-// Ikona kafelka: rozmiar kwadratu z ikoną (domyślny = największy) i odległość od nazwy usługi
+// Ikona kafelka: rozmiar kwadratu z ikoną (domyślnie 28 px, maks. 32 px) i odległość od nazwy usługi
 // (brak = automatycznie: nazwa i cena przy dolnej krawędzi kafelka).
 export const TILE_ICON_MIN = 12;
 export const TILE_ICON_MAX = 32;
