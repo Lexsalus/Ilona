@@ -550,7 +550,9 @@
   .primary { padding: 13px 18px; margin-top: 12px; }
 }
 
-@media (max-width: 480px) {
+/* Telefon: czat na cały ekran. Także telefony z małym „rozmiarem wyświetlania” (szerokość do 600 px)
+   i telefony poziomo (ekran dotykowy, niska wysokość). */
+@media (max-width: 600px), (pointer: coarse) and (max-height: 500px) {
   .floating { bottom: 12px; }
   .floating.right { right: 12px; }
   .floating.left { left: 12px; }

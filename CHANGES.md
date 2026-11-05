@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.12
+- Telefon: czat na cały ekran także przy szerokości do 600 px (mały „rozmiar wyświetlania”) i w poziomie
+
 ### 1.2.11
 - Style czatu z numerem wersji w adresie — po aktualizacji przeglądarka nie używa starych stylów
 
