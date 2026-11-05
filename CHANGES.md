@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.1
+- Cień kafelków jak w projekcie: pasek w kolorze usługi po prawej stronie, do następnego kafelka, zwężający się u góry i u dołu
+
 ### 1.2.0
 - Wygląd „premium”: kafelki z ikonami, ceną w pigułce i kolorowym cieniem (przełącznik w panelu, domyślnie włączony), szeroki przycisk „Umów wizytę”, nowy nagłówek i kolory usług
 

@@ -332,7 +332,7 @@
 /* Kafelki usług (projekt „premium”) — kolor z ustawień (--k); obrys = wariant tej samej grupy.
    Ikona w półprzezroczystym kwadracie, nazwa, cena w „pigułce”; cień w kolorze usługi (przełącznik w panelu). */
 .msg.bot:has(.tiles) { max-width: 100%; width: 100%; }
-.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-bottom: 4px; }
+.tiles { --tile-gap: 10px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--tile-gap); padding-bottom: 4px; }
 .tile {
   min-width: 0;
   --k: #0f5a45;
@@ -354,10 +354,29 @@
   transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
 }
 .tiles-shadow .tile {
+  position: relative;
   box-shadow:
     0 14px 24px -12px color-mix(in srgb, var(--k) 85%, transparent),
     0 4px 10px -3px color-mix(in srgb, var(--k) 30%, transparent);
 }
+/* Cień „premium” po prawej stronie kafelka: pasek w kolorze usługi wypełnia odstęp aż do
+   następnego kafelka (który go przykrywa), zwężając się ku górze i ku dołowi. */
+.tiles-shadow .tile:not(.cta)::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 9%;
+  bottom: 9%;
+  width: calc(var(--tile-gap, 10px) + 8px);
+  background: var(--k);
+  opacity: 0.92;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 24%, #000 76%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 24%, #000 76%, transparent 100%);
+  filter: blur(1px);
+  pointer-events: none;
+}
+/* Pojedynczy kafelek i kafelki o szerokości tekstu — bez paska (nie ma do czego sięgać). */
+.tiles-shadow .tiles.single .tile::after, .tiles-shadow.tiles-autow .tile::after { display: none; }
 .tile.outline { background: var(--surface); color: var(--k); }
 .tile:hover { transform: translateY(-2px); filter: brightness(1.06); }
 .tiles-shadow .tile:hover {
