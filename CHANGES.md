@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.8
+- Przycisk pełnego ekranu „□” (ponowne kliknięcie przywraca rozmiar); treść na środku w czytelnej szerokości; zwarty nagłówek z trzema przyciskami
+
 ### 1.2.7
 - Niskie okno przeglądarki: czat zajmuje prawie całą wysokość, zwarty nagłówek, kafelki i pole wpisywania; cienki pasek przewijania
 

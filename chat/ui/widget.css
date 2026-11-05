@@ -187,15 +187,15 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 18px 16px 14px 20px;
+  gap: 12px;
+  padding: 16px 12px 14px 16px;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
 .avatar {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--brand);
   color: #f3dfae;
@@ -215,7 +215,7 @@
   border: 2.5px solid var(--bg);
 }
 .title { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-.title strong { font-family: var(--serif); font-size: 21px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; color: var(--brand); }
+.title strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: var(--serif); font-size: 18.5px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; color: var(--brand); }
 .subtitle { margin-top: 2px; font-size: 13px; color: var(--brand-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .close {
   width: 42px;
@@ -230,7 +230,18 @@
   flex: none;
 }
 .close:hover { background: var(--line); }
-.win-actions { display: flex; gap: 8px; flex: none; }
+.win-actions { display: flex; gap: 6px; flex: none; }
+.win-actions .close { width: 36px; height: 36px; }
+.win-actions .close svg { width: 18px; height: 18px; }
+
+/* Pełny ekran (przycisk „□”): okno na całą stronę, treść rozmowy w czytelnej szerokości na środku. */
+.floating.maximized.open { inset: 0; }
+.maximized .panel { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; }
+.maximized .log,
+.maximized .composer,
+.maximized .sos { padding-left: max(16px, calc((100% - 820px) / 2)); padding-right: max(16px, calc((100% - 820px) / 2)); }
+.maximized .header { padding-left: max(20px, calc((100% - 860px) / 2)); padding-right: max(16px, calc((100% - 860px) / 2)); }
+.maximized .intro { padding-left: max(26px, calc((100% - 520px) / 2)); padding-right: max(26px, calc((100% - 520px) / 2)); }
 .close svg { width: 20px; height: 20px; }
 
 /* ---------- Wiadomości ---------- */
@@ -551,6 +562,8 @@
   .floating.left { left: 12px; }
   .floating.open { inset: 0; }
   .floating .panel { width: 100vw; height: 100dvh; border-radius: 0; border: 0; }
+  /* Na telefonie czat i tak zajmuje cały ekran — przycisk pełnego ekranu jest zbędny. */
+  .maximize { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .open .panel, .msg.enter, .typing i { animation: none; }

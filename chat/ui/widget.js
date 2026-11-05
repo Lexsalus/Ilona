@@ -16,6 +16,10 @@ const ICON_CLOSE =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const ICON_MIN =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 16.5h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const ICON_MAX =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="5.5" width="13" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+const ICON_RESTORE =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="8.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 5.5h8a2.5 2.5 0 0 1 2.5 2.5v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const ICON_SEND =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -127,9 +131,12 @@ export function mountWidget(opts) {
   minBtn.innerHTML = ICON_MIN;
   closeBtn.title = 'Zamknij (rozmowa zacznie się od nowa)';
   // Przyciski w prawym górnym rogu: „_” i „×”.
+  // „□” — powiększa okno czatu na cały ekran (ponowne kliknięcie przywraca zwykły rozmiar).
+  const maxBtn = el('button', 'close maximize');
+  maxBtn.type = 'button';
   const winActions = () => {
     const box = el('div', 'win-actions');
-    box.append(minBtn.cloneNode(true), closeBtn.cloneNode(true));
+    box.append(minBtn.cloneNode(true), maxBtn.cloneNode(true), closeBtn.cloneNode(true));
     return box;
   };
 
@@ -450,6 +457,19 @@ export function mountWidget(opts) {
     logTurn({ session: state.session, consent: state.consent, variant: engine.name, version: engine.version, question: message, reply });
   }
 
+  // Pełny ekran: przełącza klasę okna i ikonę/opis przycisków („Powiększ” ↔ „Przywróć”).
+  function setMaximized(max) {
+    state.max = Boolean(max) && !inline;
+    wrap.classList.toggle('maximized', state.max);
+    root.querySelectorAll('.maximize').forEach((b) => {
+      b.innerHTML = state.max ? ICON_RESTORE : ICON_MAX;
+      const label = state.max ? 'Przywróć zwykły rozmiar czatu' : 'Powiększ czat na cały ekran';
+      b.setAttribute('aria-label', label);
+      b.title = state.max ? 'Przywróć' : 'Pełny ekran';
+    });
+    saveState(storeKey, state);
+  }
+
   function setOpen(open) {
     state.open = open;
     wrap.classList.toggle('open', open);
@@ -499,7 +519,8 @@ export function mountWidget(opts) {
   input.addEventListener('input', autoGrow);
   launcher.addEventListener('click', () => setOpen(!state.open));
   root.querySelectorAll('.minimize').forEach((b) => b.addEventListener('click', () => setOpen(false)));
-  root.querySelectorAll('.close:not(.minimize)').forEach((b) =>
+  root.querySelectorAll('.maximize').forEach((b) => b.addEventListener('click', () => setMaximized(!state.max)));
+  root.querySelectorAll('.close:not(.minimize):not(.maximize)').forEach((b) =>
     b.addEventListener('click', () => {
       resetConversation();
       setOpen(false);
@@ -510,6 +531,7 @@ export function mountWidget(opts) {
   });
 
   showScreen();
+  setMaximized(state.max);
   setOpen(inline ? true : state.open);
   // Podgląd w panelu: rozmowa startuje od razu (bez ekranu z imieniem), żeby widać było powitanie.
   if (opts.autoStartName && !state.name) startConversation(opts.autoStartName, false);
