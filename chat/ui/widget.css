@@ -230,6 +230,7 @@
   flex: none;
 }
 .close:hover { background: var(--line); }
+.win-actions { display: flex; gap: 8px; flex: none; }
 .close svg { width: 20px; height: 20px; }
 
 /* ---------- Wiadomości ---------- */

@@ -14,6 +14,8 @@ const ICON_BUBBLE =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5c4.4 0 7.5 2.9 7.5 6.6s-3.1 6.6-7.5 6.6c-.9 0-1.8-.1-2.6-.4L5.6 19l1-3.3C5.4 14.5 4.5 12.9 4.5 11.1 4.5 7.4 7.6 4.5 12 4.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
 const ICON_CLOSE =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const ICON_MIN =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 16.5h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const ICON_SEND =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -117,6 +119,19 @@ export function mountWidget(opts) {
   closeBtn.type = 'button';
   closeBtn.setAttribute('aria-label', 'Zamknij czat');
   closeBtn.innerHTML = ICON_CLOSE;
+  // „_” — minimalizuje okno do ikony czatu (rozmowa zostaje, jak przy zamknięciu).
+  const minBtn = el('button', 'close minimize');
+  minBtn.type = 'button';
+  minBtn.setAttribute('aria-label', 'Zminimalizuj czat');
+  minBtn.title = 'Zminimalizuj';
+  minBtn.innerHTML = ICON_MIN;
+  closeBtn.title = 'Zamknij';
+  // Przyciski w prawym górnym rogu: „_” i „×”.
+  const winActions = () => {
+    const box = el('div', 'win-actions');
+    box.append(minBtn.cloneNode(true), closeBtn.cloneNode(true));
+    return box;
+  };
 
   // --- Ekran 1: imię ---------------------------------------------------------
   const intro = el('div', 'intro');
@@ -126,7 +141,7 @@ export function mountWidget(opts) {
   brand.append(logo, el('span', 'brand-name', title));
   const introTop = el('div', 'intro-top');
   introTop.append(brand);
-  if (!inline) introTop.append(closeBtn.cloneNode(true));
+  if (!inline) introTop.append(winActions());
 
   const nameForm = el('form', 'intro-form');
   const h = el('h2', 'intro-title', fill(SITE.introTitle));
@@ -184,7 +199,7 @@ export function mountWidget(opts) {
   titleBox.append(el('strong', '', title), el('span', 'subtitle', `${SITE.assistant} · wirtualna konsultantka · online`));
   header.title = `${engine.label} · ${engine.name} v${engine.version}`;
   header.append(avatar, titleBox);
-  if (!inline) header.append(closeBtn);
+  if (!inline) header.append(winActions());
 
   const log = el('div', 'log');
   log.setAttribute('aria-live', 'polite');
