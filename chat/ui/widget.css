@@ -216,7 +216,7 @@
 }
 .title { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .title strong { font-family: var(--serif); font-size: 21px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; color: var(--brand); }
-.subtitle { margin-top: 2px; font-size: 13px; color: var(--brand-soft); }
+.subtitle { margin-top: 2px; font-size: 13px; color: var(--brand-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .close {
   width: 42px;
   height: 42px;
@@ -239,6 +239,9 @@
   overflow-y: auto;
   /* Nigdy poziomego paska: paski cieni przy ostatniej kolumnie kafelków są przycinane na krawędzi. */
   overflow-x: hidden;
+  /* Cienki pasek przewijania — nie zabiera kafelkom szerokości (np. „Antykoncepcja” w jednej linii). */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--ink) 22%, transparent) transparent;
   padding: 16px 16px 10px;
   display: flex;
   flex-direction: column;
@@ -511,6 +514,36 @@
 
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes blink { 0%, 80%, 100% { opacity: 0.35; } 40% { opacity: 1; } }
+
+/* Niskie okno przeglądarki (laptop z powiększeniem, mały ekran): okno czatu zajmuje prawie całą
+   wysokość, a nagłówek, kafelki i pole wpisywania są niższe — więcej miejsca na rozmowę. */
+@media (max-height: 760px) {
+  .floating { bottom: 12px; }
+  .panel { height: min(680px, calc(100vh - 24px)); height: min(680px, calc(100dvh - 24px)); }
+}
+@media (max-height: 640px) {
+  .header { padding: 10px 12px 9px 14px; gap: 10px; }
+  .avatar { width: 40px; height: 40px; }
+  .avatar svg { width: 21px; height: 21px; }
+  .status-dot { width: 12px; height: 12px; }
+  .title strong { font-size: 17px; }
+  .subtitle { font-size: 12px; }
+  .close { width: 36px; height: 36px; }
+  .close svg { width: 18px; height: 18px; }
+  .log { padding: 10px 12px 8px; gap: 10px; }
+  .tile { min-height: 0; gap: 5px; padding: 9px; }
+  .tile-name { margin-top: 2px; }
+  .tile.cta { min-height: 44px; padding: 8px 14px; }
+  .composer { padding: 6px 12px; }
+  .input { padding: 10px 18px; font-size: 15px; }
+  .send { width: 44px; height: 44px; }
+  .sos { padding: 0 12px 8px; font-size: 12px; }
+  .intro { padding: 16px 18px 14px; }
+  .intro-logo { min-height: 0; padding: 6px 0 0; }
+  .intro-title { font-size: 23px; }
+  .intro-lead { margin: 8px 0 14px; font-size: 14.5px; }
+  .primary { padding: 13px 18px; margin-top: 12px; }
+}
 
 @media (max-width: 480px) {
   .floating { bottom: 12px; }
