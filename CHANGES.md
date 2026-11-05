@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.13
+- iPhone: pełny ekran także na starszym iOS (wysokość 100vh, gdy brak dvh)
+
 ### 1.2.12
 - Telefon: czat na cały ekran także przy szerokości do 600 px (mały „rozmiar wyświetlania”) i w poziomie
 

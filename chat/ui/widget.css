@@ -557,7 +557,8 @@
   .floating.right { right: 12px; }
   .floating.left { left: 12px; }
   .floating.open { inset: 0; }
-  .floating .panel { width: 100vw; height: 100dvh; border-radius: 0; border: 0; }
+  /* 100vh — starsze iPhone'y (iOS < 15.4) nie znają dvh; nowsze biorą 100dvh (bez paska Safari). */
+  .floating .panel { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; }
   /* Na telefonie czat zajmuje cały ekran; przycisk „□” jest widoczny tylko tutaj. */
   .maximize { display: grid; }
   .floating.maximized.open { inset: 0; }
