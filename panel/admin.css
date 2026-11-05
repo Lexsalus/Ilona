@@ -404,7 +404,14 @@ li.empty { padding: 10px 2px; }
 .tile-preview.tiles-shadow .pv-tile { position: relative; }
 .tile-preview.tiles-shadow .pv-tile::after { content: ""; position: absolute; left: 100%; top: 9%; bottom: 9%; width: 16px; background: var(--k, #0f5a45); opacity: .92; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 24%, #000 76%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 24%, #000 76%, transparent); filter: blur(1px); pointer-events: none; }
 .tile-preview.tiles-shadow .pv-tile { box-shadow: 0 14px 24px -12px color-mix(in srgb, var(--k, #0f5a45) 85%, transparent), 0 4px 10px -3px color-mix(in srgb, var(--k, #0f5a45) 30%, transparent); }
-.tile-preview .pv-name { max-width: 100%; font-size: var(--tile-fs, 13.5px); overflow-wrap: anywhere; }
+.tile-preview .pv-name { max-width: 100%; font-size: var(--tile-fs, 13.5px); overflow-wrap: anywhere; margin-top: auto; }
+.tile-ico { display: grid; place-items: center; width: var(--ico-size, 22px); height: var(--ico-size, 22px); border-radius: calc(var(--ico-size, 22px) * 0.28); background: color-mix(in srgb, currentColor 16%, transparent); flex: none; }
+.pv-tile.outline .tile-ico { background: color-mix(in srgb, var(--k) 11%, #fff); }
+.tile-ico svg { display: block; width: calc(var(--ico-size, 22px) * 0.5625); height: calc(var(--ico-size, 22px) * 0.5625); }
+.tile-preview.tiles-icogap .pv-tile { justify-content: flex-start; }
+.tile-preview.tiles-icogap .tile-ico { margin-bottom: calc(var(--ico-gap, 5px) - 5px); }
+.tile-preview.tiles-icogap .pv-name { margin-top: 0; }
+.tile-preview.tiles-icogap .pv-price { margin-top: auto; }
 .tile-preview .pv-price { font-size: calc(var(--tile-fs, 13.5px) * 0.85); }
 .tile-preview.tiles-center-h .pv-tile { align-items: center; text-align: center; }
 .tile-preview.tiles-center-h .pv-price { align-self: center; }
@@ -423,3 +430,6 @@ li.empty { padding: 10px 2px; }
 /* Dev reset — narzędzie deweloperskie w górnym pasku. */
 .top-actions .dev-reset { color: #b42318; border-color: #f3c3bd; }
 .top-actions .dev-reset:hover { background: #fdecea; }
+
+/* Przełączniki wyglądu kafelków — jeden pod drugim. */
+.checks-col { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 8px; }

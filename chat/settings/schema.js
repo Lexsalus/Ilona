@@ -173,6 +173,11 @@ function cleanButtons(input) {
 export const TILE_PADDING_MAX = 24;
 export const TILE_FONT_MIN = 10;
 export const TILE_FONT_MAX = 20;
+// Ikona kafelka: rozmiar kwadratu z ikoną (domyślny = największy) i odległość od nazwy usługi
+// (brak = automatycznie: nazwa i cena przy dolnej krawędzi kafelka).
+export const TILE_ICON_MIN = 12;
+export const TILE_ICON_MAX = 32;
+export const TILE_ICON_GAP_MAX = 30;
 export const TILE_SYMS = ['none', 'vertical', 'horizontal', 'both'];
 // Zapisuje tylko zmiany; symetria jest wymuszana także w danych (góra = dół itd.).
 export function cleanTiles(input) {
@@ -187,6 +192,12 @@ export function cleanTiles(input) {
   if (src.centerV === true || src.center === true) out.centerV = true;
   // Pojedynczy kafelek w odpowiedzi dopasowany do treści — domyślnie włączone, zapisujemy tylko wyłączenie.
   if (src.singleFit === false) out.singleFit = false;
+  const ic = Math.round(Number(src.iconSize));
+  if (Number.isFinite(ic) && ic !== DEFAULT_TILES.iconSize) out.iconSize = Math.min(TILE_ICON_MAX, Math.max(TILE_ICON_MIN, ic));
+  if (src.iconGap !== null && src.iconGap !== undefined && src.iconGap !== '') {
+    const ig = Math.round(Number(src.iconGap));
+    if (Number.isFinite(ig)) out.iconGap = Math.min(TILE_ICON_GAP_MAX, Math.max(0, ig));
+  }
   // Kolorowy cień pod kafelkami — domyślnie włączony, zapisujemy tylko wyłączenie.
   if (src.shadow === false) out.shadow = false;
   const fs = Math.round(Number(src.fontSize) * 2) / 2;

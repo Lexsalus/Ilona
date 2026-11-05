@@ -310,9 +310,7 @@ export function mountWidget(opts) {
       node.append(ico, el('span', 'tile-name', name), arrow);
     } else if (tile) {
       // Ikona usługi (stały SVG) w półprzezroczystym kwadracie, nazwa, cena w „pigułce”.
-      const ico = el('span', 'tile-ico');
-      ico.innerHTML = TILE_ICONS[l.svc] || ICON_GENERIC;
-      node.append(ico, el('span', 'tile-name', name));
+      node.append(tileIcon(l.svc), el('span', 'tile-name', name));
       if (price) node.append(paintPrice(priceNode(price), l.priceColor));
     } else {
       node.textContent = l.label;
@@ -527,6 +525,12 @@ export function applyTileStyle(node, t) {
   node.classList.toggle('tiles-center-v', Boolean(t.centerV));
   node.classList.toggle('tiles-single-fit', t.singleFit !== false);
   node.classList.toggle('tiles-shadow', t.shadow !== false);
+  // Ikona: rozmiar (px) i — gdy ustawiona — stała odległość od nazwy usługi.
+  node.style.setProperty('--ico-size', `${t.iconSize || 32}px`);
+  const gap = Number.isFinite(t.iconGap) ? t.iconGap : null;
+  node.classList.toggle('tiles-icogap', gap !== null);
+  if (gap !== null) node.style.setProperty('--ico-gap', `${gap}px`);
+  else node.style.removeProperty('--ico-gap');
   node.style.setProperty('--tile-fs', `${t.fontSize || 13.5}px`);
   node.classList.toggle('tiles-pack', Boolean(t.pack) && !t.autoWidth);
 }
@@ -571,6 +575,13 @@ export function contrastWithWhite(hex) {
   const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
   const L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
   return 1.05 / (L + 0.05);
+}
+
+// Ikona usługi w kwadraciku (stały SVG) — także do podglądu kafelków w panelu.
+export function tileIcon(svc) {
+  const ico = el('span', 'tile-ico');
+  ico.innerHTML = TILE_ICONS[svc] || ICON_GENERIC;
+  return ico;
 }
 
 // Cena w „pigułce”: „od” cieńszym pismem, kwota pogrubiona („od 79 zł”).

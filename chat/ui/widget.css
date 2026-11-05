@@ -388,14 +388,19 @@
 .tile-ico {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+  width: var(--ico-size, 32px);
+  height: var(--ico-size, 32px);
+  border-radius: calc(var(--ico-size, 32px) * 0.28);
   background: color-mix(in srgb, currentColor 16%, transparent);
   flex: none;
 }
 .tile.outline .tile-ico { background: color-mix(in srgb, var(--k) 11%, var(--surface)); }
-.tile-ico svg { width: 18px; height: 18px; }
+.tile-ico svg { width: calc(var(--ico-size, 32px) * 0.5625); height: calc(var(--ico-size, 32px) * 0.5625); }
+/* Stała odległość ikony od nazwy (panel): nazwa tuż pod ikoną, cena przy dolnej krawędzi. */
+.tiles-icogap .tile:not(.cta) { justify-content: flex-start; }
+.tiles-icogap .tile-ico { margin-bottom: calc(var(--ico-gap, 7px) - 7px); }
+.tiles-icogap .tile-name { margin-top: 0; }
+.tiles-icogap .tile-price { margin-top: auto; }
 .tile-name { margin-top: auto; max-width: 100%; min-width: 0; font-size: var(--tile-fs, 13.5px); font-weight: 500; line-height: 1.22; overflow-wrap: anywhere; }
 .tile-price {
   align-self: flex-start;

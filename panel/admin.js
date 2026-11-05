@@ -9,9 +9,9 @@ import { INTENTS, defaultAnswer, SITE } from '../chat/core/knowledge.js';
 import { TEXTS, CASE_LABELS } from '../chat/core/texts.js';
 import { SERVICES, BUTTONS, CASE_BUTTONS, resolveButton, setDesignOverrides, PALETTE, DEFAULT_TILES, orderTiles, DEFAULT_SITE, DEFAULT_PAGES, DEFAULT_KEYWORDS, DEFAULT_EXTRAS, EXTRAS_CASES } from '../chat/core/knowledge.js';
 import { DEFAULT_ALARM_PHRASES } from '../chat/core/safety.js';
-import { SITE_FIELDS, IMAGE_MAX_CHARS, cleanKeyword, cleanAlarmPhrase, cleanTiles, TILE_PADDING_MAX, TILE_FONT_MIN, TILE_FONT_MAX, CRISIS_LIMIT_MAX, DEFAULT_SAFETY } from '../chat/settings/schema.js';
+import { SITE_FIELDS, IMAGE_MAX_CHARS, cleanKeyword, cleanAlarmPhrase, cleanTiles, TILE_PADDING_MAX, TILE_FONT_MIN, TILE_FONT_MAX, TILE_ICON_MIN, TILE_ICON_MAX, TILE_ICON_GAP_MAX, CRISIS_LIMIT_MAX, DEFAULT_SAFETY } from '../chat/settings/schema.js';
 import { botEngine } from '../chat/engine/bot-engine.js';
-import { contrastWithWhite, applyTileStyle, layoutTiles, mountWidget } from '../chat/ui/widget.js';
+import { contrastWithWhite, applyTileStyle, layoutTiles, mountWidget, tileIcon } from '../chat/ui/widget.js';
 import { respond } from '../chat/core/pipeline.js';
 import { normalize } from '../chat/core/text.js';
 
@@ -841,6 +841,7 @@ function previewButton(entry) {
   const node = el('span', b.tile ? `pv-tile${b.outline ? ' outline' : ''}` : 'pv-link');
   node.style.setProperty('--k', b.color);
   if (b.tile && !b.outline && contrastWithWhite(b.color) < 3) node.style.setProperty('--k-ink', '#1d1d1f');
+  if (b.tile && b.id !== 'umow_wizyte') node.append(tileIcon(b.svc));
   node.append(el('span', 'pv-name', name));
   if (price) {
     const pr = el('span', 'pv-price', price);
@@ -994,7 +995,9 @@ function renderTilesCfg() {
     l.append(cb, el('span', '', label), tip(hint));
     return l;
   };
-  form.append(
+  const checks = el('div', 'checks-col');
+  form.append(checks);
+  checks.append(
     toggle('fit', 'Dopasuj wysokość do zawartości', 'Kafelek bez ceny albo z krótkim tekstem jest niższy — czat zajmuje mniej miejsca w pionie. Wyłączone: wszystkie kafelki w rzędzie mają równą wysokość.'),
     toggle('singleFit', 'Pojedynczy kafelek dopasowany do treści', 'Gdy w odpowiedzi jest tylko jeden kafelek, nie jest wciśnięty w jedną trzecią szerokości: napis mieści się w jednej linii, a wysokość dopasowuje się do napisu i ceny (bez pustego miejsca). Przy kilku kafelkach decydują pozostałe ustawienia. Domyślnie włączone.'),
     toggle('shadow', 'Cienie pod kafelkami', 'Miękki cień w kolorze usługi pod każdym kafelkiem — kafelki „unoszą się” nad tłem. Wyłączone: kafelki płaskie. Domyślnie włączone.'),
@@ -1029,6 +1032,49 @@ function renderTilesCfg() {
   fsLab.append(fsVal);
   fsF.append(fsLab, fs);
   form.append(fsF);
+  // Wielkość ikon na kafelkach (domyślna = największa).
+  const icF = el('label', 'field');
+  const ic = el('input');
+  ic.type = 'range';
+  ic.min = String(TILE_ICON_MIN);
+  ic.max = String(TILE_ICON_MAX);
+  ic.step = '1';
+  ic.value = String(t.iconSize);
+  const icVal = el('code', 'small', `${t.iconSize} px`);
+  ic.addEventListener('input', () => {
+    icVal.textContent = `${ic.value} px`;
+    applyPreview({ ...t, iconSize: Number(ic.value) });
+  });
+  ic.addEventListener('change', () => setTiles({ ...t, iconSize: Number(ic.value) }));
+  const icLab = labelSpan('Wielkość ikon ', `Wielkość kwadracika z ikoną usługi (${TILE_ICON_MIN}–${TILE_ICON_MAX} px, domyślnie ${DEFAULT_TILES.iconSize} px — największa). Ikona w środku zmienia się proporcjonalnie.`);
+  icLab.append(icVal);
+  icF.append(icLab, ic);
+  form.append(icF);
+  // Odległość ikony od nazwy usługi: automatycznie (nazwa i cena przy dolnej krawędzi) albo stała.
+  const igF = el('div', 'field');
+  const igAuto = el('label', 'check');
+  const igAutoCb = el('input');
+  igAutoCb.type = 'checkbox';
+  igAutoCb.checked = !Number.isFinite(t.iconGap);
+  igAuto.append(igAutoCb, el('span', '', 'automatycznie'));
+  const ig = el('input');
+  ig.type = 'range';
+  ig.min = '0';
+  ig.max = String(TILE_ICON_GAP_MAX);
+  ig.step = '1';
+  ig.value = String(Number.isFinite(t.iconGap) ? t.iconGap : 7);
+  ig.disabled = igAutoCb.checked;
+  const igVal = el('code', 'small', igAutoCb.checked ? 'auto' : `${ig.value} px`);
+  ig.addEventListener('input', () => {
+    igVal.textContent = `${ig.value} px`;
+    applyPreview({ ...t, iconGap: Number(ig.value) });
+  });
+  ig.addEventListener('change', () => setTiles({ ...t, iconGap: Number(ig.value) }));
+  igAutoCb.addEventListener('change', () => setTiles({ ...t, iconGap: igAutoCb.checked ? null : Number(ig.value) }));
+  const igLab = labelSpan('Odległość ikony od napisu ', `Odstęp między ikoną a nazwą usługi pod nią (0–${TILE_ICON_GAP_MAX} px). „Automatycznie” (domyślnie): nazwa i cena są przy dolnej krawędzi kafelka, a odstęp wypełnia wolne miejsce. Stała odległość: nazwa tuż pod ikoną, cena na dole.`);
+  igLab.append(igVal);
+  igF.append(igLab, igAuto, ig);
+  form.append(igF);
   form.append(symF);
   // Kolejność kafelków.
   const ordF = el('label', 'field');

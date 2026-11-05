@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.2
+- Panel: wielkość ikon na kafelkach (12–32 px, domyślnie największa) i odległość ikony od napisu (automatycznie albo 0–30 px)
+
 ### 1.2.1
 - Cień kafelków jak w projekcie: pasek w kolorze usługi po prawej stronie, do następnego kafelka, zwężający się u góry i u dołu
 
