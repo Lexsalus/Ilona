@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.11
+- Style czatu z numerem wersji w adresie — po aktualizacji przeglądarka nie używa starych stylów
+
 ### 1.2.10
 - Dopisek o 112: numery „112 lub 999” znów na czerwono
 
