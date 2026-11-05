@@ -187,6 +187,8 @@ export function cleanTiles(input) {
   if (src.centerV === true || src.center === true) out.centerV = true;
   // Pojedynczy kafelek w odpowiedzi dopasowany do treści — domyślnie włączone, zapisujemy tylko wyłączenie.
   if (src.singleFit === false) out.singleFit = false;
+  // Kolorowy cień pod kafelkami — domyślnie włączony, zapisujemy tylko wyłączenie.
+  if (src.shadow === false) out.shadow = false;
   const fs = Math.round(Number(src.fontSize) * 2) / 2;
   if (Number.isFinite(fs) && fs !== DEFAULT_TILES.fontSize) out.fontSize = Math.min(TILE_FONT_MAX, Math.max(TILE_FONT_MIN, fs));
   if (TILE_ORDERS.includes(src.order) && src.order !== 'default') out.order = src.order;

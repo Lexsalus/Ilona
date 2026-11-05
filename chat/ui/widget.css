@@ -4,25 +4,27 @@
 :host { all: initial; }
 
 .chat {
-  --brand: #14937c;          /* zieleń marki: logo, imię konsultantki, status */
-  --accent: #2e2787;         /* granat: przyciski, dymki pacjenta */
+  --brand: #0e3a39;          /* ciemna zieleń marki: awatar, logo, przycisk czatu (projekt „premium”) */
+  --brand-soft: #516160;     /* podpis pod tytułem */
+  --accent: #0e3a39;         /* przyciski, dymki pacjenta (atrybut data-accent / panel) */
   --accent-ink: #ffffff;
-  --mint: #dbf2ea;           /* dymki konsultanta */
+  --mint: #e1efe8;           /* dymki konsultanta */
   --mint-ink: #0f2a24;
-  --online: #34c98a;
-  --ink: #141a2e;
-  --muted: #5f6677;
-  --line: #e2e5ec;
-  --bg: #f3f4f7;
+  --online: #2f9e6b;
+  --ink: #142624;
+  --muted: #5d6b69;
+  --line: #e1e6e4;
+  --bg: #f3f5f4;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
   --surface: #ffffff;
   --danger: #b42318;
   --danger-soft: #fef3f2;
   /* Kolory przycisków według znaczenia (specyfikacja czatu, sekcja 4). Czerwony — WYŁĄCZNIE alarm i 112. */
   --k-alarm: #c0392b;
-  --k-doctor: #2f7d5a;   /* konsultacja lekarska */
-  --k-psych: #6a4fd6;    /* psychiatra, leki psychiatryczne */
-  --k-therapy: #2f8478;  /* psycholog / terapeuta */
-  --k-paper: #3558c9;    /* recepta, L4, wyniki, skierowania, kobiety/mężczyźni */
+  --k-doctor: #0f5a45;   /* konsultacja lekarska */
+  --k-psych: #4438b4;    /* psychiatra, leki psychiatryczne */
+  --k-therapy: #5e6b1c;  /* psycholog / terapeuta */
+  --k-paper: #1d48a7;    /* wyniki badań */
   --k-info: #5f6b7a;     /* cennik, jak umówić, kontakt, informacje */
 
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -53,7 +55,7 @@
   cursor: pointer;
   display: grid;
   place-items: center;
-  box-shadow: 0 10px 26px rgba(20, 147, 124, 0.35);
+  box-shadow: 0 10px 26px rgba(14, 58, 57, 0.35);
   transition: transform 0.2s ease;
   margin-left: auto;
 }
@@ -109,7 +111,7 @@
   flex: none;
 }
 .logo svg { width: 26px; height: 26px; }
-.brand-name { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+.brand-name { font-family: var(--serif); font-size: 21px; font-weight: 700; letter-spacing: -0.01em; color: var(--brand); }
 
 /* Logo zajmuje wolne miejsce i zmniejsza się na niskich ekranach. */
 .intro-logo {
@@ -130,6 +132,8 @@
 .intro-form { padding-top: 12px; display: flex; flex-direction: column; }
 .intro-title {
   margin: 0;
+  font-family: var(--serif);
+  color: var(--brand);
   font-size: 30px;
   line-height: 1.18;
   font-weight: 800;
@@ -184,17 +188,17 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 16px 16px 16px 18px;
-  background: var(--surface);
+  padding: 18px 16px 14px 20px;
+  background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
 .avatar {
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--brand);
-  color: #fff;
+  color: #f3dfae;
   display: grid;
   place-items: center;
   flex: none;
@@ -208,17 +212,17 @@
   height: 15px;
   border-radius: 50%;
   background: var(--online);
-  border: 2.5px solid var(--surface);
+  border: 2.5px solid var(--bg);
 }
 .title { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-.title strong { font-size: 17px; font-weight: 750; letter-spacing: -0.01em; }
-.subtitle { font-size: 13.5px; color: var(--brand); }
+.title strong { font-family: var(--serif); font-size: 21px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; color: var(--brand); }
+.subtitle { margin-top: 2px; font-size: 13px; color: var(--brand-soft); }
 .close {
   width: 42px;
   height: 42px;
   border: 0;
   border-radius: 50%;
-  background: var(--bg);
+  background: var(--surface);
   color: var(--ink);
   cursor: pointer;
   display: grid;
@@ -325,39 +329,95 @@
 .link.k-alarm { --k: #c0392b; background: var(--k); color: #fff; min-height: 44px; padding: 10px 18px; border-radius: 12px; font-size: 15px; font-weight: 800; }
 .link.k-alarm:hover { filter: brightness(1.1); }
 
-/* Kafelki usług — kolor z ustawień (--k); obrys = wariant tej samej grupy. */
+/* Kafelki usług (projekt „premium”) — kolor z ustawień (--k); obrys = wariant tej samej grupy.
+   Ikona w półprzezroczystym kwadracie, nazwa, cena w „pigułce”; cień w kolorze usługi (przełącznik w panelu). */
 .msg.bot:has(.tiles) { max-width: 100%; width: 100%; }
-.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-bottom: 4px; }
 .tile {
   min-width: 0;
-  --k: #2f7d5a;
+  --k: #0f5a45;
   --k-ink: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 6px;
-  min-height: 70px;
-  padding: var(--tile-pad, 5px);
-  border: 2px solid var(--k);
-  border-radius: 14px;
+  gap: 7px;
+  min-height: 104px;
+  padding: var(--tile-pad, 11px);
+  border: 1.5px solid var(--k);
+  border-radius: 18px;
   background: var(--k);
   color: var(--k-ink);
   font: inherit;
   text-align: left;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--k) 25%, transparent);
-  transition: transform 0.12s ease, filter 0.12s ease;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
 }
-.tile.outline { background: var(--surface); color: var(--k); box-shadow: none; }
+.tiles-shadow .tile {
+  box-shadow:
+    0 14px 24px -12px color-mix(in srgb, var(--k) 85%, transparent),
+    0 4px 10px -3px color-mix(in srgb, var(--k) 30%, transparent);
+}
+.tile.outline { background: var(--surface); color: var(--k); }
 .tile:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.tiles-shadow .tile:hover {
+  box-shadow:
+    0 16px 26px -12px color-mix(in srgb, var(--k) 85%, transparent),
+    0 4px 10px -2px color-mix(in srgb, var(--k) 26%, transparent);
+}
 .tile:focus-visible { outline: 3px solid color-mix(in srgb, var(--k) 45%, transparent); outline-offset: 2px; }
-.tile-name { max-width: 100%; min-width: 0; font-size: var(--tile-fs, 13.5px); font-weight: 750; line-height: 1.2; overflow-wrap: anywhere; }
-.tile-price { align-self: flex-start; font-size: calc(var(--tile-fs, 13.5px) * 0.89); font-weight: 800; padding: 2px 8px; border-radius: 99px; background: color-mix(in srgb, currentColor 18%, transparent); }
+.tile-ico {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  flex: none;
+}
+.tile.outline .tile-ico { background: color-mix(in srgb, var(--k) 11%, var(--surface)); }
+.tile-ico svg { width: 18px; height: 18px; }
+.tile-name { margin-top: auto; max-width: 100%; min-width: 0; font-size: var(--tile-fs, 13.5px); font-weight: 500; line-height: 1.22; overflow-wrap: anywhere; }
+.tile-price {
+  align-self: flex-start;
+  font-size: calc(var(--tile-fs, 13.5px) * 0.92);
+  line-height: 1.2;
+  padding: 3px 9px;
+  border-radius: 99px;
+  border: 1px solid color-mix(in srgb, currentColor 32%, transparent);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  white-space: nowrap;
+}
+.tile-price b { font-weight: 750; }
+.price-from { font-weight: 450; opacity: 0.92; }
+.tile.outline .tile-price { background: color-mix(in srgb, var(--k) 9%, var(--surface)); border-color: color-mix(in srgb, var(--k) 28%, transparent); }
+
+/* „Umów wizytę” — szeroki przycisk pod kafelkami: obrys, ikona kalendarza, strzałka. */
+.tile.cta {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: 1.5px solid #c2a676;
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--brand);
+  box-shadow: none;
+}
+.tile.cta .tile-name { margin-top: 0; flex: 1; font-size: 15px; font-weight: 700; }
+.cta-ico, .cta-arrow { display: grid; place-items: center; flex: none; }
+.cta-ico { color: #a57a34; }
+.cta-ico svg, .cta-arrow svg { width: 20px; height: 20px; }
+.tile.cta:hover { filter: none; background: #fbf8f2; }
+.tiles-autow .tile.cta, .tiles-single-fit .tiles .tile.cta { flex: 1 1 100%; }
 @media (max-width: 380px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 /* Przełącznik „dopasuj wysokość”: kafelek tak wysoki jak jego treść (bez ceny — niższy). */
 .tiles-fit .tiles { align-items: start; }
 .tiles-fit .tile { min-height: 0; justify-content: flex-start; }
+.tiles-fit .tile-name { margin-top: 0; }
 /* Przełącznik „bez przenoszenia liter”: wyrazy nie są łamane w środku; linie wyrównane. */
 .tiles-nobreak .tile-name { overflow-wrap: normal; word-break: normal; hyphens: manual; text-wrap: balance; }
 /* Przełącznik „szerokość dopasowana do tekstu”: kafelki w rzędach o szerokości treści. */
@@ -368,15 +428,17 @@
 .tiles.packed { grid-auto-rows: 1px; row-gap: 0; align-items: start; }
 /* Przełączniki „wyśrodkuj w poziomie” / „wyśrodkuj w pionie” — niezależne. */
 .tiles-center-h .tile { align-items: center; text-align: center; }
-.tiles-center-h .tile-price { align-self: center; }
+.tiles-center-h .tile-price, .tiles-center-h .tile-ico { align-self: center; }
 .tiles-center-v .tile { justify-content: center; }
+.tiles-center-v .tile-name { margin-top: 0; }
 /* Tylko jeden kafelek w odpowiedzi — nie wciśnięty w 1/3 szerokości: napis w jednej linii
    (jeśli się mieści), wysokość według treści (bez min. 70 px). */
-.tiles-single-fit .tiles.single { display: flex; }
-.tiles-single-fit .tiles.single .tile { flex: 0 1 auto; max-width: 100%; min-height: 0; justify-content: flex-start; }
+.tiles-single-fit .tiles.single { display: flex; flex-wrap: wrap; }
+.tiles-single-fit .tiles.single .tile:not(.cta) { flex: 0 1 auto; max-width: 100%; min-height: 0; justify-content: flex-start; }
 
 /* Stały dopisek „W nagłym zagrożeniu życia dzwoń 112 lub 999.” */
-.sos { margin: 0; padding: 0 14px 12px; background: var(--surface); font-size: 12.5px; font-weight: 650; color: #8e2418; text-align: center; }
+.sos { margin: 0; padding: 2px 14px 14px; background: var(--bg); font-size: 12.5px; font-weight: 450; color: var(--muted); text-align: center; }
+.sos strong { font-weight: 750; color: var(--brand); }
 .intro .sos { padding: 12px 0 0; background: none; }
 
 /* ---------- Pole wpisywania ---------- */
@@ -384,9 +446,9 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  padding: 12px 14px 8px;
-  background: var(--surface);
-  border-top: 1px solid var(--line);
+  align-items: center;
+  padding: 10px 14px 10px;
+  background: var(--bg);
 }
 .input {
   flex: 1;
@@ -394,21 +456,22 @@
   font-size: 15.5px;
   color: inherit;
   resize: none;
-  padding: 13px 20px;
+  padding: 14px 22px;
   border: 1.5px solid var(--line);
   border-radius: 999px;
-  background: var(--bg);
+  background: var(--surface);
   outline: none;
   max-height: 120px;
 }
-.input:focus { border-color: var(--accent); background: var(--surface); }
+.input:focus { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); background: var(--surface); }
 .input::placeholder { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .send {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border: 0;
   border-radius: 50%;
   background: var(--accent);
+  box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--accent) 70%, transparent);
   color: var(--accent-ink);
   cursor: pointer;
   display: grid;

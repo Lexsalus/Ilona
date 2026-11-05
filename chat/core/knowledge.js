@@ -21,7 +21,7 @@ export const DEFAULT_SITE = Object.freeze({
   introTitle: 'Dzień dobry! Proszę podać swoje imię.',
   introLead: 'Proszę wpisać imię, aby rozpocząć rozmowę z {asystentka_z}, naszą wirtualną konsultantką.',
   placeholder: 'Opisz własnymi słowami, w czym możemy pomóc',
-  accent: '#2e2787', // kolor przycisku czatu i dymków pacjenta
+  accent: '#0e3a39', // kolor przycisku czatu i dymków pacjenta
   position: 'right', // 'right' | 'left' — strona ekranu
   autoOpen: false, // czy czat otwiera się sam po wejściu na stronę
   logo: '', // własne logo (obraz wgrany w panelu) — puste = chat/img/logo.png
@@ -97,7 +97,8 @@ export const DOCTOR_FIRST =
   'Nie oceniam objawów ani nie udzielam porad medycznych — robi to lekarz, dlatego najlepszym krokiem jest konsultacja online.';
 
 // ---------------------------------------------------------------------------
-// USŁUGI — domyślne wartości ze specyfikacji czatu v1.1 (sekcja 4 i 7).
+// USŁUGI — domyślne wartości ze specyfikacji czatu v1.1 (sekcja 4 i 7);
+// kolory — z projektu „wersja premium” (ciemniejsze odcienie tych samych barw, lepszy kontrast).
 // Wszystko poniżej (nazwa, cena, kolor, obrys, nazwa usługi w formularzu) można zmienić
 // w panelu: zakładka „Usługi i przyciski” — bez programisty. Tu są tylko wartości domyślne.
 //   service — nazwa usługi w formularzu (?service=…), sprawdzona na stronie 14.10.2026
@@ -106,20 +107,20 @@ export const DOCTOR_FIRST =
 //   priceColor — kolor plakietki z ceną na kafelku; brak = „auto” (odcień koloru kafelka)
 // ---------------------------------------------------------------------------
 export const SERVICES = {
-  wizyta: { label: 'Konsultacja lekarska', service: '', price: 'od 79 zł', priceName: 'Konsultacja lekarska (wizyta lekarska)', color: '#2F7D5A' },
-  wyniki: { label: 'Omówienie wyników badań', service: 'Omówienie wyników badań', price: 'od 79 zł', priceName: 'Omówienie wyników badań', color: '#3558C9' },
-  skierowanie: { label: 'Skierowanie na badania', service: 'Skierowanie na badania', price: 'od 79 zł', priceName: 'Skierowanie', color: '#D98A1F' },
-  recepta: { label: 'e-Recepta online', service: 'e-Recepta online', price: 'od 59 zł', priceName: 'E-recepta online', color: '#B8468B' },
-  kontynuacja: { label: 'Kontynuacja leczenia', service: 'Kontynuacja leczenia', price: 'od 59 zł', priceName: 'Kontynuacja leczenia', color: '#B8468B', outline: true },
-  l4: { label: 'L4 online', service: 'L4 online', price: 'od 79 zł', priceName: 'L4 online', color: '#1B8FB5' },
-  dzien_po: { label: 'Tabletka „dzień po”', service: 'Tabletka dzień po', price: 'od 45 zł', priceName: 'Konsultacja „tabletka dzień po”', color: '#E0702B' },
-  antykoncepcja: { label: 'Antykoncepcja', service: 'Antykoncepcja', price: 'od 59 zł', priceName: 'Antykoncepcja', color: '#8E3F9E' },
-  trt: { label: 'TRT', service: 'TRT Testosteron', price: 'od 199 zł', priceName: 'TRT (terapia testosteronem)', color: '#44546A' },
-  otylosc: { label: 'Leczenie otyłości', service: 'Leczenie otyłości', price: '129 zł', priceName: 'Leczenie otyłości', color: '#7D8F2A' },
-  psychiatra: { label: 'Psychiatra online', service: 'Psychiatra Online', price: '259 zł', priceName: 'Konsultacja z psychiatrą online', color: '#6A4FD6' },
-  leki_psych: { label: 'Leki psychiatryczne', service: 'Leki psychiatryczne', price: '', priceName: 'Leki psychiatryczne', color: '#6A4FD6', outline: true },
-  psycholog: { label: 'Psycholog', service: 'Psycholog / Terapeuta', price: '169 zł', priceName: 'Konsultacja z psychologiem / terapeutą', color: '#2F8478' },
-  terapeuta: { label: 'Terapeuta', service: 'Psycholog / Terapeuta', price: '169 zł', priceName: 'Konsultacja z terapeutą', color: '#2F8478', outline: true },
+  wizyta: { label: 'Konsultacja lekarska', service: '', price: 'od 79 zł', priceName: 'Konsultacja lekarska (wizyta lekarska)', color: '#0F5A45' },
+  wyniki: { label: 'Omówienie wyników badań', service: 'Omówienie wyników badań', price: 'od 79 zł', priceName: 'Omówienie wyników badań', color: '#1D48A7' },
+  skierowanie: { label: 'Skierowanie na badania', service: 'Skierowanie na badania', price: 'od 79 zł', priceName: 'Skierowanie', color: '#E2A33A' },
+  recepta: { label: 'e-Recepta online', service: 'e-Recepta online', price: 'od 59 zł', priceName: 'E-recepta online', color: '#8E296B' },
+  kontynuacja: { label: 'Kontynuacja leczenia', service: 'Kontynuacja leczenia', price: 'od 59 zł', priceName: 'Kontynuacja leczenia', color: '#8E296B', outline: true },
+  l4: { label: 'L4 online', service: 'L4 online', price: 'od 79 zł', priceName: 'L4 online', color: '#0D6477' },
+  dzien_po: { label: 'Tabletka „dzień po”', service: 'Tabletka dzień po', price: 'od 45 zł', priceName: 'Konsultacja „tabletka dzień po”', color: '#B9461A' },
+  antykoncepcja: { label: 'Antykoncepcja', service: 'Antykoncepcja', price: 'od 59 zł', priceName: 'Antykoncepcja', color: '#6A2E9F' },
+  trt: { label: 'TRT', service: 'TRT Testosteron', price: 'od 199 zł', priceName: 'TRT (terapia testosteronem)', color: '#263A52' },
+  otylosc: { label: 'Leczenie otyłości', service: 'Leczenie otyłości', price: '129 zł', priceName: 'Leczenie otyłości', color: '#3F6B2E' },
+  psychiatra: { label: 'Psychiatra online', service: 'Psychiatra Online', price: '259 zł', priceName: 'Konsultacja z psychiatrą online', color: '#4438B4' },
+  leki_psych: { label: 'Leki psychiatryczne', service: 'Leki psychiatryczne', price: '', priceName: 'Leki psychiatryczne', color: '#4438B4', outline: true },
+  psycholog: { label: 'Psycholog', service: 'Psycholog / Terapeuta', price: '169 zł', priceName: 'Konsultacja z psychologiem / terapeutą', color: '#5E6B1C' },
+  terapeuta: { label: 'Terapeuta', service: 'Psycholog / Terapeuta', price: '169 zł', priceName: 'Konsultacja z terapeutą', color: '#5E6B1C', outline: true },
   dermatologia: { label: 'Dermatologia online', service: 'Dermatologia online', price: '', priceName: 'Dermatologia online', color: '#5F6B7A', outline: true },
   ginekologia: { label: 'Ginekologia online', service: 'Ginekologia online', price: '', priceName: 'Ginekologia online', color: '#5F6B7A', outline: true },
   alergie: { label: 'Alergie i astma', service: 'Alergie i astma', price: '', priceName: 'Alergie i astma', color: '#5F6B7A', outline: true },
@@ -128,11 +129,11 @@ export const SERVICES = {
   infekcje: { label: 'Infekcje i przeziębienia', service: 'Infekcje i przeziębienia', price: '', priceName: 'Infekcje i przeziębienia', color: '#5F6B7A', outline: true },
 };
 
-// Paleta kolorów do wyboru w panelu (kafelki i plakietki z ceną): kolory ze specyfikacji v1.1
+// Paleta kolorów do wyboru w panelu (kafelki i plakietki z ceną): kolory projektu „premium”, część kolorów ze specyfikacji v1.1
 // + kilka odcieni pomocniczych. Czerwony (#C0392B) celowo poza paletą — tylko 112.
 export const PALETTE = [
-  '#2F7D5A', '#3558C9', '#D98A1F', '#B8468B', '#1B8FB5', '#E0702B', '#8E3F9E', '#44546A', '#7D8F2A',
-  '#6A4FD6', '#2F8478', '#5F6B7A', '#14937C', '#2E2787', '#1D1D1F', '#FFFFFF', '#FFF4D6', '#FDE7EF', '#E3F4EF', '#E6EEFF',
+  '#0F5A45', '#8E296B', '#0D6477', '#1D48A7', '#E2A33A', '#4438B4', '#5E6B1C', '#B9461A', '#6A2E9F', '#263A52', '#3F6B2E',
+  '#0E3A39', '#5F6B7A', '#2F7D5A', '#3558C9', '#6A4FD6', '#2F8478', '#1D1D1F', '#FFFFFF', '#FFF4D6', '#FDE7EF', '#E3F4EF', '#E6EEFF',
 ];
 
 // Kolory stałe: czerwony — WYŁĄCZNIE alarm i 112; szary — informacje (cennik, kontakt…).
@@ -257,7 +258,7 @@ export function resolveButton(entry, { withOverrides = true, noPrice = false } =
     const s = withOverrides ? serviceOf(b.svc) : SERVICES[b.svc];
     const label = customLabel || b.label || s.label;
     const price = b.price === false || noPrice ? '' : s.price;
-    return { id, label: price ? `${label} · ${price}` : label, url: form(s.service), color: s.color, priceColor: s.priceColor || '', outline: Boolean(b.outline ?? s.outline), tile: true, kind: 'service' };
+    return { id, svc: b.svc, label: price ? `${label} · ${price}` : label, url: form(s.service), color: s.color, priceColor: s.priceColor || '', outline: Boolean(b.outline ?? s.outline), tile: true, kind: 'service' };
   }
   if (b.ask) return { id, label: customLabel || b.label, ask: b.ask, color: INFO_COLOR, kind: 'info' };
   const url = b.page ? PAGES[b.page].url : b.url;
@@ -525,7 +526,7 @@ export const EXTRAS_CASES = ['C', 'D'];
 //   order   — kolejność kafelków: default (z ustawień) | priced (najpierw z ceną) | cheap (od najtańszej) | expensive (od najdroższej)
 //   centerH / centerV — zawartość kafelka wyśrodkowana w poziomie / w pionie (niezależnie)
 //   fontSize — wielkość napisu na kafelku w px (cena proporcjonalnie mniejsza)
-export const DEFAULT_TILES = Object.freeze({ fit: false, nobreak: false, pack: false, autoWidth: false, centerH: false, centerV: false, singleFit: true, fontSize: 13.5, order: 'default', padding: Object.freeze({ t: 5, r: 5, b: 5, l: 5 }), sym: 'none' });
+export const DEFAULT_TILES = Object.freeze({ fit: false, nobreak: false, pack: false, autoWidth: false, centerH: false, centerV: false, singleFit: true, shadow: true, fontSize: 13.5, order: 'default', padding: Object.freeze({ t: 11, r: 11, b: 11, l: 11 }), sym: 'none' });
 export const TILES = { ...DEFAULT_TILES, padding: { ...DEFAULT_TILES.padding } };
 
 // Kolejność kafelków według ustawienia „order”. Sortowanie stabilne — przy równych cenach

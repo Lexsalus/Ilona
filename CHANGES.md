@@ -11,6 +11,11 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 <!-- NEW ENTRIES BELOW -->
 
+## 2026-11-05
+
+### 1.2.0
+- Wygląd „premium”: kafelki z ikonami, ceną w pigułce i kolorowym cieniem (przełącznik w panelu, domyślnie włączony), szeroki przycisk „Umów wizytę”, nowy nagłówek i kolory usług
+
 ## 2026-10-21
 
 ### 1.1.2

@@ -17,6 +17,35 @@ const ICON_CLOSE =
 const ICON_SEND =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+// Awatar w nagłówku: dymek z plusem (projekt „premium”).
+const ICON_AVATAR =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v8.5a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17H5a1.5 1.5 0 0 1-1.5-1.5V7A1.5 1.5 0 0 1 5 5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8.6v5.3M9.35 11.25h5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+const ICON_ARROW =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+// Ikony kafelków usług — stałe SVG (obrys w kolorze napisu kafelka). Klucz = usługa (SERVICES).
+const svgIcon = (body) =>
+  `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+const ICON_PILL = svgIcon('<rect x="3.2" y="8.6" width="17.6" height="6.8" rx="3.4" transform="rotate(-45 12 12)"/><path d="M9.6 9.6l4.8 4.8"/>');
+const ICON_CALENDAR = svgIcon('<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>');
+const ICON_GENERIC = svgIcon('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>');
+const TILE_ICONS = {
+  wizyta: svgIcon('<path d="M6 3.5v5a4 4 0 0 0 8 0v-5"/><path d="M10 12.5v2.5a4.5 4.5 0 0 0 9 0v-2"/><circle cx="19" cy="11" r="1.8"/>'),
+  recepta: ICON_PILL,
+  kontynuacja: svgIcon('<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/>'),
+  l4: svgIcon('<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M9 14.8l2 2 4-4"/>'),
+  wyniki: svgIcon('<path d="M7 18v-5M12 18V7M17 18v-8"/>'),
+  skierowanie: svgIcon('<path d="M9.5 3.5h5M10.5 3.5v6l-5 8.5a1.5 1.5 0 0 0 1.3 2.3h10.4a1.5 1.5 0 0 0 1.3-2.3l-5-8.5v-6"/><path d="M7.8 15h8.4"/>'),
+  psychiatra: svgIcon('<path d="M8 20.5v-3.2a7 7 0 1 1 9-1.9V20.5"/><circle cx="12.2" cy="10" r="2.4"/><path d="M12.2 12.4v2"/>'),
+  leki_psych: ICON_PILL,
+  psycholog: svgIcon('<path d="M5 5h14a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 19 17h-8l-4.5 3.5V17H5a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 5 5z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/>'),
+  dzien_po: svgIcon('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  antykoncepcja: svgIcon('<rect x="3.5" y="6" width="17" height="12" rx="3"/><circle cx="8" cy="10.2" r=".9"/><circle cx="12" cy="10.2" r=".9"/><circle cx="16" cy="10.2" r=".9"/><circle cx="8" cy="13.8" r=".9"/><circle cx="12" cy="13.8" r=".9"/><circle cx="16" cy="13.8" r=".9"/>'),
+  trt: svgIcon('<path d="M12 3.5c3 4 6 7.3 6 10.6a6 6 0 0 1-12 0C6 10.8 9 7.5 12 3.5z"/>'),
+  otylosc: svgIcon('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0"/><path d="M12 10.5l1.3-1.6"/>'),
+};
+TILE_ICONS.terapeuta = TILE_ICONS.psycholog;
+
 // Imię, obrazy i napisy pochodzą z SITE — domyślne wartości albo zmiany z panelu („Strona i wygląd”),
 // nałożone przez initPanel() przed zamontowaniem widżetu.
 const DEFAULT_AVATAR = new URL('../img/avatar.png', import.meta.url).href;
@@ -135,7 +164,7 @@ export function mountWidget(opts) {
   consentBox.lastChild.append(' ', privacy);
   nameForm.append(h, lead, label, nameInput);
   if (logging.level >= 2) nameForm.append(consentBox);
-  nameForm.append(start, hint, el('p', 'sos', UI_TEXTS.emergencyFooter));
+  nameForm.append(start, hint, sosNode(UI_TEXTS.emergencyFooter));
   // Logo kliniki w wolnym miejscu między nagłówkiem a formularzem.
   const introLogo = el('div', 'intro-logo');
   const logoImg = el('img');
@@ -149,7 +178,7 @@ export function mountWidget(opts) {
   const chatView = el('div', 'chat-view');
   const header = el('header', 'header');
   const avatar = el('div', 'avatar');
-  avatar.innerHTML = ICON_BUBBLE;
+  avatar.innerHTML = ICON_AVATAR;
   avatar.append(el('span', 'status-dot'));
   const titleBox = el('div', 'title');
   titleBox.append(el('strong', '', title), el('span', 'subtitle', `${SITE.assistant} · wirtualna konsultantka · online`));
@@ -172,7 +201,7 @@ export function mountWidget(opts) {
   send.innerHTML = ICON_SEND;
   form.append(input, send);
   // Stały dopisek pod polem (specyfikacja, pkt 8.9) — widoczny zawsze.
-  const sos = el('p', 'sos', UI_TEXTS.emergencyFooter);
+  const sos = sosNode(UI_TEXTS.emergencyFooter);
 
   chatView.append(header, log, form, sos);
   panel.append(intro, chatView);
@@ -216,14 +245,17 @@ export function mountWidget(opts) {
       for (const l of ordered) {
         const alarm = l.kind === 'alarm';
         const tile = !alarm && (l.tile || (l.main && l.kind !== 'info'));
-        const cls = alarm ? 'link main k-alarm' : tile ? `tile${l.outline ? ' outline' : ''}` : 'link';
-        const node = buttonNode(l, cls, tile, msg.case);
+        // „Umów wizytę” — szeroki przycisk pod kafelkami (ikona kalendarza i strzałka).
+        const cta = tile && l.id === 'umow_wizyte';
+        const cls = alarm ? 'link main k-alarm' : cta ? 'tile cta' : tile ? `tile${l.outline ? ' outline' : ''}` : 'link';
+        const node = buttonNode(l, cls, tile, msg.case, cta);
         if (!node) continue;
-        if (!alarm) paint(node, l.color, tile && !l.outline);
+        if (!alarm && !cta) paint(node, l.color, tile && !l.outline);
         (tile ? tiles : links).append(node);
       }
       if (tiles.children.length) {
-        tiles.classList.toggle('single', tiles.children.length === 1); // „Pojedynczy kafelek dopasowany do treści”
+        // „Pojedynczy kafelek dopasowany do treści” (szeroki „Umów wizytę” się nie liczy).
+        tiles.classList.toggle('single', tiles.querySelectorAll('.tile:not(.cta)').length === 1);
         item.append(tiles);
         if (TILES.nobreak || TILES.pack) requestAnimationFrame(() => layoutTiles(tiles, TILES));
       }
@@ -253,7 +285,7 @@ export function mountWidget(opts) {
 
   // Jeden przycisk: link (https/tel) albo pytanie zadawane w czacie (l.ask).
   // Kafelek: nazwa usługi + cena w drugiej linii („e-Recepta online · od 59 zł”).
-  function buttonNode(l, cls, tile, caseId) {
+  function buttonNode(l, cls, tile, caseId, cta = false) {
     let node;
     if (l.ask) {
       node = el('button', cls);
@@ -270,9 +302,18 @@ export function mountWidget(opts) {
       node.addEventListener('click', () => clicked(l.label, caseId));
     }
     const [name, price] = String(l.label).split(' · ');
-    if (tile) {
-      node.append(el('span', 'tile-name', name));
-      if (price) node.append(paintPrice(el('span', 'tile-price', price), l.priceColor));
+    if (cta) {
+      const ico = el('span', 'cta-ico');
+      ico.innerHTML = ICON_CALENDAR;
+      const arrow = el('span', 'cta-arrow');
+      arrow.innerHTML = ICON_ARROW;
+      node.append(ico, el('span', 'tile-name', name), arrow);
+    } else if (tile) {
+      // Ikona usługi (stały SVG) w półprzezroczystym kwadracie, nazwa, cena w „pigułce”.
+      const ico = el('span', 'tile-ico');
+      ico.innerHTML = TILE_ICONS[l.svc] || ICON_GENERIC;
+      node.append(ico, el('span', 'tile-name', name));
+      if (price) node.append(paintPrice(priceNode(price), l.priceColor));
     } else {
       node.textContent = l.label;
     }
@@ -485,6 +526,7 @@ export function applyTileStyle(node, t) {
   node.classList.toggle('tiles-center-h', Boolean(t.centerH));
   node.classList.toggle('tiles-center-v', Boolean(t.centerV));
   node.classList.toggle('tiles-single-fit', t.singleFit !== false);
+  node.classList.toggle('tiles-shadow', t.shadow !== false);
   node.style.setProperty('--tile-fs', `${t.fontSize || 13.5}px`);
   node.classList.toggle('tiles-pack', Boolean(t.pack) && !t.autoWidth);
 }
@@ -529,6 +571,25 @@ export function contrastWithWhite(hex) {
   const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
   const L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
   return 1.05 / (L + 0.05);
+}
+
+// Cena w „pigułce”: „od” cieńszym pismem, kwota pogrubiona („od 79 zł”).
+function priceNode(price) {
+  const node = el('span', 'tile-price');
+  const m = /^(od)\s+(.+)$/i.exec(price);
+  if (m) node.append(el('span', 'price-from', `${m[1]} `), el('b', '', m[2]));
+  else node.append(el('b', '', price));
+  return node;
+}
+
+// Stały dopisek o 112: numery alarmowe pogrubione, reszta zwykłym tekstem (textContent).
+function sosNode(text) {
+  const p = el('p', 'sos');
+  for (const part of String(text || '').split(/(\b112\b(?:\s+lub\s+\b999\b)?|\b999\b)/)) {
+    if (!part) continue;
+    p.append(/^(112|999)/.test(part) ? el('strong', '', part) : document.createTextNode(part));
+  }
+  return p;
 }
 
 function el(tag, className = '', text) {

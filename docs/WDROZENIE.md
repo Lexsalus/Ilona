@@ -300,6 +300,7 @@ Ustawienia domyślne pochodzą ze specyfikacji czatu „Ilona” v1.1. Świadome
 - **Tryb kryzysowy po B** domyślnie **wyłączony**: kolejna niejasna wiadomość dostaje „Nie jestem pewna…” z usługami (specyfikacja: ponownie komunikat B). Zachowanie ze specyfikacji można włączyć w panelu („Bezpieczeństwo”).
 - **Frazy alarmowe A** rozszerzone o przedawkowanie narkotyków i dopalaczy („za dużo narkotyków”, „przećpałem”…); część fraz bez tolerancji literówek, żeby nie dawać fałszywych alarmów („nie mogę umówić wizyty”, „zatrudnienie”).
 - **Pojedynczy kafelek** w odpowiedzi ma szerokość i wysokość według treści (przełącznik w panelu).
+- **Wygląd „premium”** (projekt graficzny z 11.2026): kafelki z ikoną usługi, ceną w „pigułce” i kolorowym cieniem (cień można wyłączyć w panelu), szeroki przycisk „Umów wizytę” z ikoną kalendarza, ciemnozielony nagłówek z tytułem pisanym szeryfową czcionką. **Kolory usług** są ciemniejszymi odcieniami barw ze specyfikacji (lepszy kontrast z białym napisem); psycholog / terapeuta — oliwkowy zamiast morskiego. Wszystkie kolory można zmienić w panelu, a poprzednie są nadal w palecie. Czcionka szeryfowa to czcionka systemowa (Georgia / Palatino) — bez pobierania czcionek z Google, ze względu na RODO.
 
 Do zatwierdzenia przez lekarza kierującego serwisem: listy fraz alarmowych (A, B) i teksty komunikatów alarmowych.
 
