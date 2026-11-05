@@ -117,15 +117,15 @@ export function mountWidget(opts) {
 
   const closeBtn = el('button', 'close');
   closeBtn.type = 'button';
-  closeBtn.setAttribute('aria-label', 'Zamknij czat');
+  closeBtn.setAttribute('aria-label', 'Zamknij czat i zakończ rozmowę');
   closeBtn.innerHTML = ICON_CLOSE;
-  // „_” — minimalizuje okno do ikony czatu (rozmowa zostaje, jak przy zamknięciu).
+  // „_” — minimalizuje okno do ikony czatu (rozmowa zostaje); „×” — kończy rozmowę i zamyka czat.
   const minBtn = el('button', 'close minimize');
   minBtn.type = 'button';
   minBtn.setAttribute('aria-label', 'Zminimalizuj czat');
   minBtn.title = 'Zminimalizuj';
   minBtn.innerHTML = ICON_MIN;
-  closeBtn.title = 'Zamknij';
+  closeBtn.title = 'Zamknij (rozmowa zacznie się od nowa)';
   // Przyciski w prawym górnym rogu: „_” i „×”.
   const winActions = () => {
     const box = el('div', 'win-actions');
@@ -458,6 +458,21 @@ export function mountWidget(opts) {
     if (open) setTimeout(() => (state.name ? input : nameInput).focus({ preventScroll: true }), 50);
   }
 
+  // Czyści rozmowę i imię — przy następnym otwarciu czat zaczyna od ekranu powitalnego.
+  function resetConversation() {
+    state.name = '';
+    state.consent = false;
+    state.session = '';
+    consentInput.checked = false;
+    state.messages = [];
+    state.flow = { crisis: false, unclear: 0 };
+    log.textContent = '';
+    nameInput.value = '';
+    input.value = '';
+    saveState(storeKey, state);
+    showScreen();
+  }
+
   nameForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = nameInput.value.replace(/\s+/g, ' ').trim().slice(0, NAME_MAX);
@@ -483,7 +498,13 @@ export function mountWidget(opts) {
   };
   input.addEventListener('input', autoGrow);
   launcher.addEventListener('click', () => setOpen(!state.open));
-  root.querySelectorAll('.close').forEach((b) => b.addEventListener('click', () => setOpen(false)));
+  root.querySelectorAll('.minimize').forEach((b) => b.addEventListener('click', () => setOpen(false)));
+  root.querySelectorAll('.close:not(.minimize)').forEach((b) =>
+    b.addEventListener('click', () => {
+      resetConversation();
+      setOpen(false);
+    }),
+  );
   wrap.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !inline) setOpen(false);
   });
@@ -498,18 +519,7 @@ export function mountWidget(opts) {
     close: () => setOpen(false),
     ask,
     // Czyści rozmowę i imię — wraca do ekranu powitalnego.
-    reset() {
-      state.name = '';
-      state.consent = false;
-      state.session = '';
-      consentInput.checked = false;
-      state.messages = [];
-      state.flow = { crisis: false, unclear: 0 };
-      log.textContent = '';
-      nameInput.value = '';
-      saveState(storeKey, state);
-      showScreen();
-    },
+    reset: resetConversation,
     destroy: () => host.remove(),
   };
 }

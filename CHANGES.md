@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-05
 
+### 1.2.6
+- „×” kończy rozmowę i zamyka czat (po otwarciu — od nowa), „_” tylko minimalizuje
+
 ### 1.2.5
 - Przycisk „_” obok zamknięcia — minimalizuje czat do ikony
 
