@@ -473,7 +473,7 @@
 
 /* Stały dopisek „W nagłym zagrożeniu życia dzwoń 112 lub 999.” */
 .sos { margin: 0; padding: 2px 14px 14px; background: var(--bg); font-size: 12.5px; font-weight: 450; color: var(--muted); text-align: center; }
-.sos strong { font-weight: 750; color: var(--brand); }
+.sos strong { font-weight: 750; color: #b42318; } /* numery alarmowe na czerwono */
 .intro .sos { padding: 12px 0 0; background: none; }
 
 /* ---------- Pole wpisywania ---------- */
