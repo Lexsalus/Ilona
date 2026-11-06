@@ -450,7 +450,13 @@ export function mountWidget(opts) {
     logTurn({ session: state.session, consent: state.consent, variant: engine.name, version: engine.version, question: message, reply });
   }
 
+  // Klasa .phone na oknie czatu — przy starcie i po obrocie / zmianie rozmiaru.
+  const markPhone = () => wrap.classList.toggle('phone', !inline && isPhone());
+  markPhone();
+  window.addEventListener('resize', markPhone);
+
   function setOpen(open) {
+    markPhone();
     state.open = open;
     wrap.classList.toggle('open', open);
     launcher.setAttribute('aria-expanded', String(open));
@@ -638,9 +644,17 @@ export function tileIcon(svc) {
   return ico;
 }
 
-// Telefon (to samo kryterium co w CSS: czat na cały ekran).
+// Telefon → klasa .phone (czat na cały ekran). Wąskie okno strony albo urządzenie dotykowe
+// z małym fizycznym ekranem (krótszy bok ≤ 600 px) — to drugie łapie też iPhone'a w trybie
+// „wersja na komputer”, z pomniejszoną stroną i obróconego poziomo.
 const PHONE_QUERY = '(max-width: 600px), (pointer: coarse) and (max-height: 500px)';
-const isPhone = () => window.matchMedia?.(PHONE_QUERY).matches ?? false;
+const isPhone = () => {
+  const mm = (q) => window.matchMedia?.(q).matches ?? false;
+  if (mm(PHONE_QUERY)) return true;
+  const touch = (navigator.maxTouchPoints || 0) > 0 && mm('(pointer: coarse)');
+  const shortSide = Math.min(window.screen?.width || 9999, window.screen?.height || 9999);
+  return touch && shortSide <= 600;
+};
 
 // Blokada przewijania strony pod otwartym czatem na telefonie (iOS: body position:fixed,
 // po zamknięciu strona wraca w to samo miejsce). Style strony przywracamy dokładnie.

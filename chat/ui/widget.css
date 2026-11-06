@@ -549,35 +549,35 @@
   .primary { padding: 13px 18px; margin-top: 12px; }
 }
 
-/* Telefon: czat na cały ekran. Także telefony z małym „rozmiarem wyświetlania” (szerokość do 600 px)
-   i telefony poziomo (ekran dotykowy, niska wysokość). */
-@media (max-width: 600px), (pointer: coarse) and (max-height: 500px) {
-  .floating { bottom: 12px; }
-  .floating.right { right: 12px; }
-  .floating.left { left: 12px; }
-  /* Okno = widoczna część ekranu (nad klawiaturą): --vv-h / --vv-top ustawia skrypt (visualViewport).
-     Bez skryptu: 100dvh, a na starszych iPhone'ach (iOS < 15.4, bez dvh) 100vh. */
-  .floating.open { inset: auto 0 auto 0; top: var(--vv-top, 0px); }
-  .floating .panel { width: 100vw; height: 100vh; height: var(--vv-h, 100dvh); border-radius: 0; border: 0; }
-  /* Przewijanie rozmowy nie „przechodzi” na stronę pod spodem. */
-  .log { overscroll-behavior: contain; }
-  /* Zwarty układ: mniejszy nagłówek, czcionki i kafelki — więcej rozmowy na ekranie. */
-  .header { padding: 10px 10px 9px 14px; gap: 10px; }
-  .avatar { width: 40px; height: 40px; }
-  .avatar svg { width: 21px; height: 21px; }
-  .status-dot { width: 12px; height: 12px; }
-  .title strong { font-size: 17px; }
-  .subtitle { font-size: 12px; }
-  .log { padding: 12px 12px 8px; gap: 10px; }
-  .bubble { font-size: 14.5px; }
-  .tiles { --tile-gap: 8px; }
-  .tile { min-height: 92px; padding: 9px; border-radius: 16px; }
-  .tile-name { font-size: calc(var(--tile-fs, 13.5px) * 0.95); }
-  .tile.cta { min-height: 46px; padding: 9px 14px; }
-  .composer { padding: 6px 10px; }
-  .send { width: 46px; height: 46px; }
-  .sos { padding: 0 12px 8px; font-size: 12px; }
-}
+/* Telefon: czat na cały ekran. Klasę .phone nadaje skrypt (isPhone): wąski ekran, telefon poziomo,
+   a także iPhone w trybie „wersja na komputer” albo z pomniejszoną stroną — liczy się fizyczny ekran
+   urządzenia dotykowego, nie szerokość strony. */
+
+.phone.floating { bottom: 12px; }
+.phone.floating.right { right: 12px; }
+.phone.floating.left { left: 12px; }
+/* Okno = widoczna część ekranu (nad klawiaturą): --vv-h / --vv-top ustawia skrypt (visualViewport).
+   Bez skryptu: 100dvh, a na starszych iPhone'ach (iOS < 15.4, bez dvh) 100vh. */
+.phone.floating.open { inset: auto 0 auto 0; top: var(--vv-top, 0px); }
+.phone.floating .panel { width: 100vw; height: 100vh; height: var(--vv-h, 100dvh); border-radius: 0; border: 0; }
+/* Przewijanie rozmowy nie „przechodzi” na stronę pod spodem. */
+.phone .log { overscroll-behavior: contain; }
+/* Zwarty układ: mniejszy nagłówek, czcionki i kafelki — więcej rozmowy na ekranie. */
+.phone .header { padding: 10px 10px 9px 14px; gap: 10px; }
+.phone .avatar { width: 40px; height: 40px; }
+.phone .avatar svg { width: 21px; height: 21px; }
+.phone .status-dot { width: 12px; height: 12px; }
+.phone .title strong { font-size: 17px; }
+.phone .subtitle { font-size: 12px; }
+.phone .log { padding: 12px 12px 8px; gap: 10px; }
+.phone .bubble { font-size: 14.5px; }
+.phone .tiles { --tile-gap: 8px; }
+.phone .tile { min-height: 92px; padding: 9px; border-radius: 16px; }
+.phone .tile-name { font-size: calc(var(--tile-fs, 13.5px) * 0.95); }
+.phone .tile.cta { min-height: 46px; padding: 9px 14px; }
+.phone .composer { padding: 6px 10px; }
+.phone .send { width: 46px; height: 46px; }
+.phone .sos { padding: 0 12px 8px; font-size: 12px; }
 @media (prefers-reduced-motion: reduce) {
   .open .panel, .msg.enter, .typing i { animation: none; }
 }

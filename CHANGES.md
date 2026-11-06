@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-06
 
+### 1.3.2
+- Telefon rozpoznawany po fizycznym ekranie urządzenia dotykowego (iPhone poziomo, „wersja na komputer”, pomniejszona strona) — zawsze pełny ekran
+
 ### 1.3.1
 - Telefon: zawsze pełny ekran bez przycisku „□”; okno nad klawiaturą (visualViewport); strona pod czatem nie przewija się; pola tekstowe 16 px (iPhone nie przybliża); bez automatycznej klawiatury po otwarciu; zwarty układ
 
