@@ -1,6 +1,8 @@
-// Panel sterowania czatu Ilona — działa lokalnie na komputerze administratora (npm run panel).
-// Łączy się z serwerem panelu (Cloudflare Worker, hasło) albo działa w trybie lokalnym
-// (ustawienia i rozmowy w localStorage tej przeglądarki).
+// Panel sterowania czatu Ilona — jeden panel pod adresem …github.io/Ilona/panel/.
+// Logowanie tokenem GitHub: ustawienia czyta i zapisuje w pliku settings.json w repozytorium
+// (GitHub API); każdy zapis to commit, po którym GitHub Actions testuje i publikuje czat.
+// Na komputerze programisty (npm run panel) dostępne są też: serwer panelu (Cloudflare Worker),
+// plik na dysku i tryb lokalny (localStorage) — schowane pod „Dla programisty”.
 // Cały tekst z ustawień i rozmów wstawiamy przez textContent — nigdy innerHTML.
 import { LOG_LEVELS, DEFAULT_CONFIG, LIMITS, sanitizeConfig, isSafeUrl, wrapSettings, unwrapSettings } from '../chat/settings/schema.js';
 import { LOCAL_CONFIG_KEY, LOCAL_LOGS_KEY, SOURCE_KEY, SETTINGS_FILE_URL, setPanelConfig } from '../chat/settings/client.js';
@@ -20,6 +22,15 @@ const ENDPOINT_KEY = 'lt-admin:endpoint';
 const PASSWORD_KEY = 'lt-admin:password';
 const MODE_KEY = 'lt-admin:mode';
 const SITE_CHECK_KEY = 'lt-admin:sitecheck';
+const GH_REPO_KEY = 'lt-admin:gh-repo';
+const GH_TOKEN_KEY = 'lt-admin:gh-token';
+const GH_BRANCH = 'main';
+// Repozytorium podpowiadane w logowaniu: z adresu GitHub Pages (właściciel.github.io/repo/panel/).
+const GH_DEFAULT_REPO = (() => {
+  const m = /^([a-z0-9-]+)\.github\.io$/i.exec(location.hostname);
+  const repo = location.pathname.split('/').filter(Boolean)[0];
+  return m && repo && repo !== 'panel' ? `${m[1]}/${repo}` : 'Lexsalus/Ilona';
+})();
 // Panel otwarty z Twojego komputera (npm run panel)? Na publicznej stronie działa tylko demo.
 const IS_LOCAL_HOST = ['localhost', '127.0.0.1'].includes(location.hostname);
 
@@ -126,6 +137,71 @@ async function fileApi() {
   };
 }
 
+// Źródło „GitHub”: settings.json w repozytorium, przez GitHub API (token z uprawnieniem Contents).
+// Zapis = commit na gałęzi main; GitHub Actions uruchamia testy i publikuje czat (ok. 1–2 min).
+// „sha” pilnuje, żeby nie nadpisać zmian zapisanych w międzyczasie z innego komputera.
+const b64encodeUtf8 = (text) => {
+  const bytes = new TextEncoder().encode(text);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+};
+const b64decodeUtf8 = (b64) => new TextDecoder().decode(Uint8Array.from(atob(String(b64).replace(/\s/g, '')), (c) => c.charCodeAt(0)));
+
+function githubApi(repo, token) {
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new Error('Repozytorium wpisz jako właściciel/nazwa, np. Lexsalus/Ilona.');
+  const url = `https://api.github.com/repos/${repo}/contents/settings.json`;
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+  let sha = null;
+  const fail = async (res) => {
+    const msg = (await res.json().catch(() => ({}))).message || '';
+    if (res.status === 401) return new Error('Nieprawidłowy albo wygasły token GitHub.');
+    if (res.status === 403) return new Error(/rate limit/i.test(msg) ? 'GitHub chwilowo ogranicza liczbę zapytań — spróbuj za kilka minut.' : 'Token nie ma uprawnienia do zapisu (potrzebne „Contents: Read and write” dla tego repozytorium).');
+    if (res.status === 404) return new Error('Nie znaleziono repozytorium albo token nie ma do niego dostępu.');
+    if (res.status === 409 || (res.status === 422 && /sha/i.test(msg))) return new Error('Plik ustawień na GitHubie zmienił się w międzyczasie (inny komputer albo osoba). Odśwież panel — Twoje niezapisane zmiany trzeba będzie wprowadzić ponownie.');
+    return new Error(`Błąd GitHub (${res.status})${msg ? `: ${msg}` : ''}.`);
+  };
+  return {
+    kind: 'github',
+    label: repo,
+    getConfig: async () => {
+      const res = await fetch(`${url}?ref=${GH_BRANCH}`, { headers, cache: 'no-store' });
+      if (res.status === 404) {
+        // Brak pliku (pierwszy zapis go utworzy) — o ile samo repozytorium jest dostępne.
+        const repoRes = await fetch(`https://api.github.com/repos/${repo}`, { headers, cache: 'no-store' });
+        if (!repoRes.ok) throw await fail(repoRes);
+        return sanitizeConfig(DEFAULT_CONFIG);
+      }
+      if (!res.ok) throw await fail(res);
+      const data = await res.json();
+      sha = data.sha;
+      return unwrapSettings(JSON.parse(b64decodeUtf8(data.content)));
+    },
+    putConfig: async (cfg) => {
+      const text = JSON.stringify(wrapSettings(cfg), null, 2) + '\n';
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'Ustawienia czatu — zapis z panelu',
+          content: b64encodeUtf8(text),
+          branch: GH_BRANCH,
+          ...(sha ? { sha } : {}),
+        }),
+      });
+      if (!res.ok) throw await fail(res);
+      sha = (await res.json()).content?.sha || sha;
+      return unwrapSettings(JSON.parse(text));
+    },
+    getLogs: async () => [],
+    deleteLogs: async () => {},
+    getSiteCheck: async () => readStore(SITE_CHECK_KEY, null),
+    runSiteCheck: async () => {
+      throw new Error('Kontrolę strony kliniki wykonuje automatycznie GitHub — codziennie rano (przy błędzie przychodzi e-mail). Ręcznie: zakładka Actions → „Kontrola strony kliniki” → Run workflow.');
+    },
+  };
+}
+
 function localApi() {
   const read = readStore;
   return {
@@ -154,16 +230,17 @@ function showLogin(error) {
   $('#app').hidden = true;
   $('#login').hidden = false;
   $('#local-origin').textContent = location.origin;
-  $('#public-note').hidden = IS_LOCAL_HOST;
-  $('#login-remote').hidden = !IS_LOCAL_HOST;
-  $('#file-divider').hidden = !IS_LOCAL_HOST;
+  // Jeden panel: logowanie przez GitHub. Inne tryby tylko na komputerze programisty.
+  $('#dev-login').hidden = !IS_LOCAL_HOST;
+  $('#gh-repo').value = localStorage.getItem(GH_REPO_KEY) || GH_DEFAULT_REPO;
+  $('#gh-remember').checked = Boolean(localStorage.getItem(GH_TOKEN_KEY));
+  const ghErr = $('#gh-error');
+  ghErr.hidden = !error;
+  ghErr.textContent = error || '';
   $('#file-desc').textContent = IS_LOCAL_HOST
     ? 'Odczyt i zapis pliku settings.json na Twoim dysku (przed każdym zapisem robiona jest kopia w panel/backups/). Plik wgrywasz potem na hosting razem z czatem.'
     : 'Podgląd opublikowanego pliku settings.json — tylko odczyt. Zmiany możesz wyeksportować do pliku.';
   $('#login-endpoint').value = localStorage.getItem(ENDPOINT_KEY) || '';
-  const err = $('#login-error');
-  err.hidden = !error;
-  err.textContent = error || '';
 }
 
 async function connect(api) {
@@ -175,12 +252,13 @@ async function connect(api) {
   $('#app').hidden = false;
   $('#conn').textContent = {
     remote: `Serwer (baza): ${api.label}`,
+    github: `GitHub: ${api.label}`,
     file: api.readOnly ? 'Plik settings.json — tylko odczyt' : 'Plik: settings.json',
     local: IS_LOCAL_HOST ? 'Tryb lokalny — tylko ta przeglądarka' : 'Podgląd demo — zmiany tylko w tej przeglądarce',
   }[api.kind];
-  $('#conn').classList.toggle('local', api.kind !== 'remote');
+  $('#conn').classList.toggle('local', !['remote', 'github'].includes(api.kind));
   // Czat w tej przeglądarce (np. podgląd czatów) korzysta z tego samego źródła.
-  localStorage.setItem(SOURCE_KEY, JSON.stringify({ remote: 'server', file: 'file', local: 'local' }[api.kind]));
+  localStorage.setItem(SOURCE_KEY, JSON.stringify({ remote: 'server', file: 'file', github: 'file', local: 'local' }[api.kind]));
   renderAll();
   applyPendingReset();
   setPreviewOn(previewOn);
@@ -202,6 +280,25 @@ $('#login-remote').addEventListener('submit', async (e) => {
   }
 });
 
+$('#login-github').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const repo = $('#gh-repo').value.trim();
+  const token = $('#gh-token').value.trim();
+  const remember = $('#gh-remember').checked;
+  try {
+    await connect(githubApi(repo, token));
+    localStorage.setItem(GH_REPO_KEY, repo);
+    localStorage.setItem(MODE_KEY, 'github');
+    // Token: domyślnie tylko do zamknięcia karty; „Zapamiętaj” — na tym komputerze.
+    sessionStorage.setItem(GH_TOKEN_KEY, token);
+    if (remember) localStorage.setItem(GH_TOKEN_KEY, token);
+    else localStorage.removeItem(GH_TOKEN_KEY);
+    $('#gh-token').value = '';
+  } catch (err) {
+    showLogin(/fetch/i.test(err.message) ? 'Nie można połączyć się z GitHubem. Sprawdź internet.' : err.message);
+  }
+});
+
 $('#login-local').addEventListener('click', () => {
   localStorage.setItem(MODE_KEY, 'local');
   connect(localApi());
@@ -219,6 +316,8 @@ $('#login-file').addEventListener('click', async () => {
 $('#logout').addEventListener('click', () => {
   if (isDirty() && !confirm('Masz niezapisane zmiany. Wylogować mimo to?')) return;
   sessionStorage.removeItem(PASSWORD_KEY);
+  sessionStorage.removeItem(GH_TOKEN_KEY);
+  localStorage.removeItem(GH_TOKEN_KEY);
   localStorage.removeItem(MODE_KEY);
   $('#login-password').value = '';
   destroyPreview();
@@ -263,6 +362,7 @@ $('#save').addEventListener('click', async () => {
     toast(
       {
         remote: 'Zapisano. Na stronie zmiany będą widoczne w ciągu ok. minuty.',
+        github: 'Zapisano na GitHubie. Czat na stronie zaktualizuje się za ok. 1–2 minuty (po testach); przeglądarki mogą jeszcze do 10 minut pokazywać poprzednią wersję.',
         file: 'Zapisano do settings.json (poprzednia wersja w panel/backups/). Wgraj plik na hosting, żeby zmiany trafiły na stronę.',
         local: 'Zapisano lokalnie.',
       }[state.api.kind],
@@ -2134,7 +2234,7 @@ function toast(message, isError = false) {
 // trafiają do edycji jako „Niezapisane zmiany” (zapis na serwerze / w pliku dopiero po
 // „Zapisz zmiany”, „Cofnij” przywraca poprzednie).
 const DEV_RESET_PENDING = 'lt-admin:reset-pending';
-const DEV_RESET_KEEP = new Set([MODE_KEY, ENDPOINT_KEY, PASSWORD_KEY]);
+const DEV_RESET_KEEP = new Set([MODE_KEY, ENDPOINT_KEY, PASSWORD_KEY, GH_REPO_KEY, GH_TOKEN_KEY]);
 
 function clearChatStorage(store) {
   try {
@@ -2186,9 +2286,13 @@ function applyPendingReset() {
   const mode = localStorage.getItem(MODE_KEY);
   const endpoint = localStorage.getItem(ENDPOINT_KEY);
   const password = sessionStorage.getItem(PASSWORD_KEY);
+  const ghToken = sessionStorage.getItem(GH_TOKEN_KEY) || localStorage.getItem(GH_TOKEN_KEY);
+  const ghRepo = localStorage.getItem(GH_REPO_KEY) || GH_DEFAULT_REPO;
   try {
-    if (mode === 'local') return await connect(localApi());
-    if (mode === 'file') return await connect(await fileApi());
+    if (mode === 'github' && ghToken) return await connect(githubApi(ghRepo, ghToken));
+    // Tryby programisty (lokalny, plik) — tylko na komputerze lokalnym.
+    if (IS_LOCAL_HOST && mode === 'local') return await connect(localApi());
+    if (IS_LOCAL_HOST && mode === 'file') return await connect(await fileApi());
     if (IS_LOCAL_HOST && mode === 'remote' && endpoint && password) return await connect(remoteApi(endpoint, password));
   } catch (err) {
     return showLogin(err.message);

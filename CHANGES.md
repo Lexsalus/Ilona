@@ -11,6 +11,11 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 <!-- NEW ENTRIES BELOW -->
 
+## 2026-11-06
+
+### 1.3.0
+- Jeden panel online: logowanie tokenem GitHub, „Zapisz zmiany” zapisuje settings.json w repozytorium (GitHub API), czat aktualizuje się po testach; tryby programisty schowane (tylko localhost)
+
 ## 2026-11-05
 
 ### 1.2.13

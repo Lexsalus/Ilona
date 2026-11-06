@@ -15,13 +15,23 @@ Dla osoby, która na co dzień opiekuje się czatem: zmienia ceny, teksty, komun
 
 ## 1. Otwarcie panelu
 
-1. W folderze z projektem uruchom w terminalu `npm run panel` (jak przygotować komputer — [ADMINISTRATOR.md](ADMINISTRATOR.md#2-uruchomienie-panelu)).
-2. Otwórz w przeglądarce **http://localhost:5050/panel/**.
-3. Wybierz, gdzie są ustawienia (zwykle ustala to administrator):
-   - **Serwer panelu** — adres i hasło od administratora; zmiany trafiają na stronę po ok. minucie,
-   - **Plik ustawień** — zmiany zapisują się w pliku `settings.json`; na stronę trafiają po wysłaniu pliku do repozytorium (robi to administrator),
-   - **Tryb lokalny** — do prób; zmiany widać tylko w tej przeglądarce, na stronie testowej `http://localhost:5050`.
-4. Po pracy: **Wyloguj**, a w terminalu `Ctrl+C`.
+1. Otwórz w przeglądarce **https://lexsalus.github.io/Ilona/panel/** (najlepiej dodaj do zakładek).
+2. Pole **Repozytorium** jest już wypełnione (`Lexsalus/Ilona`). W polu **Token GitHub** wklej swój token (jak go zdobyć — niżej) i kliknij **Zaloguj**.
+3. Zmieniaj ustawienia i kliknij **Zapisz zmiany**. Ustawienia zapisują się w repozytorium na GitHubie, a czat na stronie zmienia się sam **po ok. 1–2 minutach** (najpierw automatycznie przechodzą testy). Przeglądarki pacjentów mogą jeszcze do 10 minut pokazywać poprzednią wersję.
+4. Po pracy: **Wyloguj** (na cudzym komputerze — zawsze).
+
+Bez tokenu panel nie wpuszcza — przypadkowa osoba, która trafi na adres panelu, niczego nie zmieni.
+
+### Token GitHub (jednorazowo)
+
+1. Zaloguj się na GitHubie kontem, które ma dostęp do repozytorium czatu.
+2. Otwórz **https://github.com/settings/personal-access-tokens/new**.
+3. **Token name:** np. „Panel Ilona”; **Expiration:** np. 1 rok (po wygaśnięciu zrobisz nowy).
+4. **Resource owner:** `Lexsalus`; **Repository access** → **Only select repositories** → `Lexsalus/Ilona`.
+5. **Permissions** → **Repository permissions** → **Contents** → **Read and write** (nic więcej nie zaznaczaj).
+6. **Generate token** i skopiuj go (zaczyna się od `github_pat_`) — GitHub pokazuje go tylko raz.
+
+Token traktuj jak hasło. Panel pamięta go do zamknięcia karty, a po zaznaczeniu **„Zapamiętaj na tym komputerze”** — na stałe w tej przeglądarce (tylko na własnym komputerze). Zgubiony albo podejrzany token usuwasz na tej samej stronie GitHuba (**Settings → Developer settings → Personal access tokens**). Każdy zapis widać w historii repozytorium jako zmianę „Ustawienia czatu — zapis z panelu” z nazwą Twojego konta — w razie pomyłki administrator może ją cofnąć.
 
 > **Wskazówki:** przy większości pól jest ikonka **?** — najedź na nią myszą (albo stuknij na telefonie), żeby zobaczyć krótkie wyjaśnienie.
 
@@ -187,4 +197,4 @@ Najpierw Ctrl+F5 (stara wersja w pamięci przeglądarki), potem „Dev reset” 
 Nie. Imię pacjenta nie jest zapisywane, adresy IP też nie. Rozmowy są oznaczone tylko losowym numerem.
 
 **Jak przetestować coś, nie zmieniając strony kliniki?**
-Zaloguj się w **trybie lokalnym** i testuj w podglądzie czatu albo na stronie testowej `http://localhost:5050`.
+Wprowadź zmiany **bez zapisywania** i sprawdź je w **podglądzie czatu** po prawej stronie panelu — pokazuje niezapisane zmiany. Nie pasuje? **Cofnij**. Strona kliniki zmienia się dopiero po „Zapisz zmiany”.

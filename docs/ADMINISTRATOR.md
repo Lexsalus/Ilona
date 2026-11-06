@@ -30,12 +30,16 @@ Komputer administratora               (opcjonalnie) Cloudflare                St
 ```
 
 - **Czat** (`chat/`, `embed.js`) działa w przeglądarce pacjenta. Przy starcie wczytuje ustawienia: z serwera panelu (jeśli podany), w przeciwnym razie z pliku `settings.json` obok skryptu, a gdy go nie ma — z wartości domyślnych.
-- **Panel administracyjny** (`panel/`) z pełnymi możliwościami działa wyłącznie na komputerze administratora (`npm run panel`). Na publicznym adresie (`…/Ilona/panel/`) jest tylko **podgląd demo** — bez logowania do serwera i bez zapisu pliku.
+- **Panel administracyjny** (`panel/`) jest jeden: **https://lexsalus.github.io/Ilona/panel/**. Logowanie tokenem GitHub; „Zapisz zmiany” zapisuje `settings.json` w repozytorium (commit przez GitHub API), a GitHub Actions testuje i publikuje czat w ok. 1–2 minuty. Bez tokenu z prawem zapisu do repozytorium panel nie wpuszcza. Na komputerze programisty (`npm run panel`) są też tryby pomocnicze — schowane pod „Dla programisty”.
 - **Serwer panelu** (`panel/server/`) jest **opcjonalny**: przechowuje ustawienia i rejestr rozmów w bazie Cloudflare D1. Bez niego czat działa na pliku `settings.json` i nie zapisuje rozmów.
 
 ---
 
 ## 2. Uruchomienie panelu
+
+**Zwykła praca:** **https://lexsalus.github.io/Ilona/panel/** → token GitHub → **Zaloguj**. Jak utworzyć token (tylko to repozytorium, uprawnienie *Contents: Read and write*) — [INSTRUKCJA.md, punkt 1](INSTRUKCJA.md#1-otwarcie-panelu). Komputer nie wymaga niczego poza przeglądarką.
+
+**Komputer programisty** (testy, rozwój czatu, tryby pomocnicze):
 
 **Jednorazowo:**
 
@@ -53,27 +57,28 @@ git pull
 npm run panel
 ```
 
-Otwórz **http://localhost:5050/panel/**. Strona testowa czatu: **http://localhost:5050/test.html**, podgląd strony kliniki z czatem: **http://localhost:5050/demo/**. Zatrzymanie: `Ctrl+C`.
+Otwórz **http://localhost:5050/panel/** (tryby pomocnicze: „Dla programisty” pod logowaniem). Strona testowa czatu: **http://localhost:5050/test.html**, podgląd strony kliniki z czatem: **http://localhost:5050/demo/**. Zatrzymanie: `Ctrl+C`.
 
 Lokalny serwer nasłuchuje tylko na `127.0.0.1` — nikt z sieci ani z internetu nie ma do niego dostępu. Projekt nie ma zależności (`npm install` nie jest potrzebne).
 
 ---
 
-## 3. Źródła ustawień: plik, serwer, tryb lokalny
-
-Przy logowaniu do panelu wybierasz, gdzie są ustawienia:
+## 3. Źródła ustawień: GitHub, plik, serwer, tryb lokalny
 
 | Źródło | Gdzie są ustawienia | Rejestr rozmów | Kiedy zmiana działa na stronie | Dla kogo |
 |---|---|---|---|---|
-| **Plik ustawień** (na start) | `settings.json` w repozytorium | nie | po `git push` (GitHub Pages publikuje w ok. minutę) | prosty start bez serwera i bazy |
+| **GitHub** (zwykła praca, panel online) | `settings.json` w repozytorium — zapis przez GitHub API (token) | nie | po ok. 1–2 min (testy + publikacja) | codzienna obsługa z dowolnego komputera |
+| **Plik ustawień** (komputer programisty) | `settings.json` na dysku | nie | po `git push` (GitHub Pages publikuje w ok. minutę) | praca w repozytorium, kopie w `panel/backups/` |
 | **Serwer panelu (baza)** | Cloudflare D1 | tak | po ok. minucie, automatycznie | produkcja z rejestrem rozmów |
 | **Tryb lokalny (demo)** | pamięć przeglądarki | tak (w tej przeglądarce) | od razu, tylko w tej przeglądarce | testy, pokaz |
 
 Czat bierze ustawienia z pierwszego dostępnego źródła: serwer panelu (gdy na stronie jest `data-panel` albo adres w `chat/config.js`) → tryb lokalny (gdy wybrano go w panelu w tej samej przeglądarce) → plik `settings.json` → ustawienia domyślne.
 
-### Praca z plikiem ustawień
+Zapis z panelu online to commit w repozytorium („Ustawienia czatu — zapis z panelu”, autor = właściciel tokenu): historia zmian i cofanie (`git revert`) jak przy każdej innej zmianie. Programista po takim zapisie robi `git pull` przed własną pracą. Jeśli `settings.json` zmienił się w międzyczasie (inny komputer), panel nie nadpisze go — prosi o odświeżenie.
 
-1. `npm run panel` → **Plik ustawień** → zmiany → **Zapisz zmiany**. Panel zapisuje `settings.json` w folderze projektu; poprzednia wersja trafia do `panel/backups/` (30 ostatnich kopii, poza repozytorium).
+### Praca z plikiem ustawień (komputer programisty)
+
+1. `npm run panel` → „Dla programisty” → **Plik ustawień** → zmiany → **Zapisz zmiany**. Panel zapisuje `settings.json` w folderze projektu; poprzednia wersja trafia do `panel/backups/` (30 ostatnich kopii, poza repozytorium).
 2. Wyślij plik do repozytorium:
 
    ```powershell
@@ -126,7 +131,10 @@ W `wrangler.toml` ustaw też `ALLOWED_ORIGINS` — domeny stron, z których czat
 
 | Zabezpieczenie | Co daje |
 |---|---|
-| Pełny panel tylko lokalnie (`127.0.0.1`); publicznie wyłącznie podgląd demo | Nikt z internetu nie zaloguje się do serwera ani nie zapisze ustawień |
+| Panel online zapisuje tylko z tokenem GitHub z prawem zapisu do repozytorium (fine-grained, jedno repozytorium, *Contents*) | Osoba bez tokenu nie zaloguje się i niczego nie zmieni; token można w każdej chwili unieważnić na GitHubie |
+| Każdy zapis = commit z autorem; publikacja dopiero po testach (GitHub Actions) | Widać, kto i kiedy zmienił ustawienia; błędny plik nie trafi na stronę |
+| Token domyślnie tylko do zamknięcia karty („Zapamiętaj” — świadomie, na własnym komputerze) | Mniejsze ryzyko na wspólnych komputerach |
+| Tryby pomocnicze (serwer, plik, lokalny) tylko na `127.0.0.1` | Nikt z internetu nie użyje ich przez publiczny adres |
 | Zapis pliku ustawień tylko z lokalnego panelu (sprawdzany Host i Origin) | Żadna inna strona otwarta w przeglądarce nie zmieni `settings.json` |
 | Hasło (`ADMIN_PASSWORD`), porównywane w stałym czasie | Bez hasła nie da się odczytać ani zmienić ustawień czy rozmów |
 | Blokada po 10 błędnych hasłach (15 min), licznik w bazie | Chroni przed zgadywaniem hasła — we wszystkich instancjach serwera |

@@ -3,7 +3,7 @@
 Wirtualna konsultantka **Ilona** pomaga pacjentom serwisu [lekarzeiterapeuci.pl](https://lekarzeiterapeuci.pl) wybrać właściwą usługę i prowadzi prosto do jej zakupu: każda odpowiedź kończy się kolorowymi kafelkami usług z ceną. Czat nie stawia diagnoz i nie udziela porad medycznych, a przy objawach stanu nagłego zawsze kieruje pod numer **112**.
 
 - **Czat** to bot regułowy: działa w całości w przeglądarce pacjenta, bez AI i bez wysyłania pytań na zewnątrz. Ustawienia domyślne pochodzą ze specyfikacji czatu „Ilona” v1.1.
-- **Panel administracyjny** pozwala bez programowania zmieniać ceny, kolory, teksty odpowiedzi, słowa kluczowe, komunikaty, wygląd czatu i zasady bezpieczeństwa.
+- **Panel administracyjny** (https://lexsalus.github.io/Ilona/panel/, logowanie tokenem GitHub) pozwala bez programowania zmieniać ceny, kolory, teksty odpowiedzi, słowa kluczowe, komunikaty, wygląd czatu i zasady bezpieczeństwa. Zapis trafia do repozytorium i po testach — na stronę.
 
 ## Wstawienie na stronę
 
@@ -40,7 +40,7 @@ chat/                  CZAT — wszystko, co ładuje strona www (nie zależy od 
   settings/              wczytywanie i sprawdzanie ustawień (wspólne z panelem)
   ui/                    widżet (okno czatu) i jego style
   img/                   logo i miniatura konsultantki
-panel/                 PANEL ADMINISTRACYJNY (uruchamiany lokalnie: npm run panel)
+panel/                 PANEL ADMINISTRACYJNY — online: …/Ilona/panel/ (logowanie tokenem GitHub)
   server/                serwer panelu — Cloudflare Worker + baza D1 (opcjonalny)
 tools/                 serwer lokalny, testy, kontrola strony, wersjonowanie
 docs/                  dokumentacja
@@ -53,7 +53,7 @@ Wymagany [Node.js](https://nodejs.org) 22.13+ (wersja LTS). Projekt nie ma zale�
 
 | Polecenie | Działanie |
 |---|---|
-| `npm run panel` | panel administracyjny i strona testowa: http://localhost:5050/panel/ |
+| `npm run panel` | panel i strona testowa na komputerze programisty: http://localhost:5050/panel/ |
 | `npm test` | testy (m.in. 38 testów akceptacyjnych ze specyfikacji) |
 | `npm run check` | zgodność wersji z `CHANGES.md` |
 | `npm run bump -- <patch\|minor\|major> "Opis"` | nowa wersja + wpis w `CHANGES.md` |

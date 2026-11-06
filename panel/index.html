@@ -20,10 +20,26 @@
         </div>
       </div>
 
-      <div id="public-note" class="notice warn" hidden>
-        <strong>Podgląd demonstracyjny.</strong> Na publicznej stronie panel działa tylko w trybie demo — zmiany zostają w Twojej przeglądarce i widać je w czatach na tej stronie. Prawdziwy panel (serwer, zapis do pliku) uruchamiasz na swoim komputerze: <code>npm run panel</code>.
-      </div>
+      <form id="login-github" class="stack">
+        <h2>Zaloguj przez GitHub</h2>
+        <p class="muted">Ustawienia czatu są w pliku <code>settings.json</code> w repozytorium czatu na GitHubie. „Zapisz zmiany” zapisuje je tam, a czat na stronie aktualizuje się sam po ok. 1–2 minutach (najpierw automatycznie przechodzą testy).</p>
+        <label class="field">
+          <span>Repozytorium <span class="tip" tabindex="0" data-tip="Właściciel/nazwa repozytorium czatu, np. Lexsalus/Ilona. Panel otwarty z GitHub Pages podpowiada je sam.">?</span></span>
+          <input id="gh-repo" type="text" required autocomplete="off" spellcheck="false" placeholder="Lexsalus/Ilona">
+        </label>
+        <label class="field">
+          <span>Token GitHub <span class="tip" tabindex="0" data-tip="Klucz dostępu z Twojego konta GitHub (fine-grained personal access token): tylko to jedno repozytorium, uprawnienie „Contents: Read and write”. Bez tokenu nikt nie zapisze zmian — panel otworzy się tylko do odczytu.">?</span></span>
+          <input id="gh-token" type="password" required autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+        </label>
+        <label class="check"><input id="gh-remember" type="checkbox"><span>Zapamiętaj na tym komputerze <span class="tip" tabindex="0" data-tip="Bez zaznaczenia token jest pamiętany tylko do zamknięcia karty. Zaznacz wyłącznie na własnym komputerze.">?</span></span></label>
+        <p id="gh-error" class="error" hidden></p>
+        <button class="btn primary" type="submit">Zaloguj</button>
+        <p class="muted small">Nie masz tokenu? <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Utwórz go na GitHubie</a>: „Repository access” → <em>Only select repositories</em> → repozytorium czatu; „Permissions” → <em>Contents: Read and write</em>. Instrukcja: <code>docs/INSTRUKCJA.md</code>.</p>
+      </form>
 
+      <details id="dev-login" class="dev-login" hidden>
+        <summary>Dla programisty — inne tryby (tylko na komputerze lokalnym)</summary>
+        <div class="stack">
       <form id="login-remote" class="stack">
         <h2>Serwer panelu</h2>
         <label class="field">
@@ -53,6 +69,8 @@
         <p class="muted">Ustawienia i rozmowy zapisują się tylko w tej przeglądarce i działają dla czatów otwartych z <code id="local-origin"></code> — np. strony porównania. Dobre do testów bez serwera.</p>
         <button id="login-local" class="btn" type="button">Otwórz w trybie lokalnym</button>
       </div>
+        </div>
+      </details>
     </div>
   </section>
 
