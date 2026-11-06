@@ -2,7 +2,7 @@
   "_info": "Ustawienia asystentki Ilony (panel sterowania). Ten plik można zaimportować w panelu albo wgrać jako settings.json.",
   "format": "lt-asystent-ustawienia",
   "formatVersion": 1,
-  "exportedAt": null,
+  "exportedAt": "2026-11-06T11:36:48.743Z",
   "config": {
     "logging": {
       "level": 0,
@@ -22,7 +22,18 @@
     "keywords": {},
     "topics": {},
     "notices": [],
-    "tiles": {},
+    "tiles": {
+      "pack": true,
+      "centerV": true,
+      "iconSize": 12,
+      "fontSize": 12,
+      "padding": {
+        "t": 12,
+        "r": 12,
+        "b": 12,
+        "l": 12
+      }
+    },
     "rules": [],
     "overrides": {},
     "updatedAt": null
