@@ -340,7 +340,8 @@
 
 /* Kafelki usług (projekt „premium”) — kolor z ustawień (--k); obrys = wariant tej samej grupy.
    Ikona w półprzezroczystym kwadracie, nazwa, cena w „pigułce”; cień w kolorze usługi (przełącznik w panelu). */
-.msg.bot:has(.tiles) { max-width: 100%; width: 100%; }
+.msg.bot.has-tiles { max-width: 100%; width: 100%; min-width: 0; }
+.tiles { width: 100%; min-width: 0; }
 .tiles { --tile-gap: 10px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--tile-gap); padding-bottom: 4px; }
 .tile {
   min-width: 0;
@@ -428,6 +429,12 @@
 /* „Umów wizytę” — szeroki przycisk pod kafelkami: obrys, ikona kalendarza, strzałka. */
 .tile.cta {
   grid-column: 1 / -1;
+  /* Nigdy szerzej niż okno czatu (ramka razem z ikoną, także w Safari). */
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  justify-self: stretch;
+  overflow: hidden;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
@@ -440,12 +447,12 @@
   color: var(--brand);
   box-shadow: none;
 }
-.tile.cta .tile-name { margin-top: 0; flex: 1; font-size: 15px; font-weight: 700; }
+.tile.cta .tile-name { margin-top: 0; flex: 1 1 auto; min-width: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cta-ico, .cta-arrow { display: grid; place-items: center; flex: none; }
 .cta-ico { color: #a57a34; }
 .cta-ico svg, .cta-arrow svg { width: 20px; height: 20px; }
 .tile.cta:hover { filter: none; background: #fbf8f2; }
-.tiles-autow .tile.cta, .tiles-single-fit .tiles .tile.cta { flex: 1 1 100%; }
+.tiles-autow .tile.cta, .tiles-single-fit .tiles .tile.cta { flex: 1 1 100%; width: 100%; }
 @media (max-width: 380px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 /* Przełącznik „dopasuj wysokość”: kafelek tak wysoki jak jego treść (bez ceny — niższy). */
 .tiles-fit .tiles { align-items: start; }

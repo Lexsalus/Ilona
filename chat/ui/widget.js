@@ -271,6 +271,7 @@ export function mountWidget(opts) {
       if (tiles.children.length) {
         // „Pojedynczy kafelek dopasowany do treści” (szeroki „Umów wizytę” się nie liczy).
         tiles.classList.toggle('single', tiles.querySelectorAll('.tile:not(.cta)').length === 1);
+        item.classList.add('has-tiles'); // zamiast :has() — starsze iPhone'y (iOS < 15.4) go nie znają
         item.append(tiles);
         if (TILES.nobreak || TILES.pack) requestAnimationFrame(() => layoutTiles(tiles, TILES));
       }

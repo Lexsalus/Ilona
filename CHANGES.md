@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-06
 
+### 1.3.3
+- „Umów wizytę”: ramka nigdy szersza niż okno czatu (także starsze Safari); bez :has() w stylach
+
 ### 1.3.2
 - Telefon rozpoznawany po fizycznym ekranie urządzenia dotykowego (iPhone poziomo, „wersja na komputer”, pomniejszona strona) — zawsze pełny ekran
 
