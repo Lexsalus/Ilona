@@ -234,8 +234,6 @@
 .win-actions .close { width: 36px; height: 36px; }
 .win-actions .close svg { width: 18px; height: 18px; }
 
-/* Przycisk pełnego ekranu „□” — tylko na telefonie (na komputerze ukryty). */
-.maximize { display: none; }
 .close svg { width: 20px; height: 20px; }
 
 /* ---------- Wiadomości ---------- */
@@ -488,7 +486,8 @@
 .input {
   flex: 1;
   font: inherit;
-  font-size: 15.5px;
+  /* 16 px — przy mniejszej czcionce iPhone przybliża stronę po stuknięciu w pole („ucieka”). */
+  font-size: 16px;
   color: inherit;
   resize: none;
   padding: 14px 22px;
@@ -540,7 +539,7 @@
   .tile-name { margin-top: 2px; }
   .tile.cta { min-height: 44px; padding: 8px 14px; }
   .composer { padding: 6px 12px; }
-  .input { padding: 10px 18px; font-size: 15px; }
+  .input { padding: 10px 18px; }
   .send { width: 44px; height: 44px; }
   .sos { padding: 0 12px 8px; font-size: 12px; }
   .intro { padding: 16px 18px 14px; }
@@ -556,12 +555,28 @@
   .floating { bottom: 12px; }
   .floating.right { right: 12px; }
   .floating.left { left: 12px; }
-  .floating.open { inset: 0; }
-  /* 100vh — starsze iPhone'y (iOS < 15.4) nie znają dvh; nowsze biorą 100dvh (bez paska Safari). */
-  .floating .panel { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; }
-  /* Na telefonie czat zajmuje cały ekran; przycisk „□” jest widoczny tylko tutaj. */
-  .maximize { display: grid; }
-  .floating.maximized.open { inset: 0; }
+  /* Okno = widoczna część ekranu (nad klawiaturą): --vv-h / --vv-top ustawia skrypt (visualViewport).
+     Bez skryptu: 100dvh, a na starszych iPhone'ach (iOS < 15.4, bez dvh) 100vh. */
+  .floating.open { inset: auto 0 auto 0; top: var(--vv-top, 0px); }
+  .floating .panel { width: 100vw; height: 100vh; height: var(--vv-h, 100dvh); border-radius: 0; border: 0; }
+  /* Przewijanie rozmowy nie „przechodzi” na stronę pod spodem. */
+  .log { overscroll-behavior: contain; }
+  /* Zwarty układ: mniejszy nagłówek, czcionki i kafelki — więcej rozmowy na ekranie. */
+  .header { padding: 10px 10px 9px 14px; gap: 10px; }
+  .avatar { width: 40px; height: 40px; }
+  .avatar svg { width: 21px; height: 21px; }
+  .status-dot { width: 12px; height: 12px; }
+  .title strong { font-size: 17px; }
+  .subtitle { font-size: 12px; }
+  .log { padding: 12px 12px 8px; gap: 10px; }
+  .bubble { font-size: 14.5px; }
+  .tiles { --tile-gap: 8px; }
+  .tile { min-height: 92px; padding: 9px; border-radius: 16px; }
+  .tile-name { font-size: calc(var(--tile-fs, 13.5px) * 0.95); }
+  .tile.cta { min-height: 46px; padding: 9px 14px; }
+  .composer { padding: 6px 10px; }
+  .send { width: 46px; height: 46px; }
+  .sos { padding: 0 12px 8px; font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .open .panel, .msg.enter, .typing i { animation: none; }

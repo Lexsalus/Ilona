@@ -16,10 +16,6 @@ const ICON_CLOSE =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const ICON_MIN =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 16.5h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-const ICON_MAX =
-  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="5.5" width="13" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
-const ICON_RESTORE =
-  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="8.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 5.5h8a2.5 2.5 0 0 1 2.5 2.5v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const ICON_SEND =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -131,12 +127,9 @@ export function mountWidget(opts) {
   minBtn.innerHTML = ICON_MIN;
   closeBtn.title = 'Zamknij (rozmowa zacznie się od nowa)';
   // Przyciski w prawym górnym rogu: „_” i „×”.
-  // „□” — powiększa okno czatu na cały ekran (ponowne kliknięcie przywraca zwykły rozmiar).
-  const maxBtn = el('button', 'close maximize');
-  maxBtn.type = 'button';
   const winActions = () => {
     const box = el('div', 'win-actions');
-    box.append(minBtn.cloneNode(true), maxBtn.cloneNode(true), closeBtn.cloneNode(true));
+    box.append(minBtn.cloneNode(true), closeBtn.cloneNode(true));
     return box;
   };
 
@@ -457,25 +450,38 @@ export function mountWidget(opts) {
     logTurn({ session: state.session, consent: state.consent, variant: engine.name, version: engine.version, question: message, reply });
   }
 
-  // Pełny ekran: przełącza klasę okna i ikonę/opis przycisków („Powiększ” ↔ „Przywróć”).
-  function setMaximized(max) {
-    state.max = Boolean(max) && !inline;
-    wrap.classList.toggle('maximized', state.max);
-    root.querySelectorAll('.maximize').forEach((b) => {
-      b.innerHTML = state.max ? ICON_RESTORE : ICON_MAX;
-      const label = state.max ? 'Przywróć zwykły rozmiar czatu' : 'Powiększ czat na cały ekran';
-      b.setAttribute('aria-label', label);
-      b.title = state.max ? 'Przywróć' : 'Pełny ekran';
-    });
-    saveState(storeKey, state);
-  }
-
   function setOpen(open) {
     state.open = open;
     wrap.classList.toggle('open', open);
     launcher.setAttribute('aria-expanded', String(open));
     saveState(storeKey, state);
-    if (open) setTimeout(() => (state.name ? input : nameInput).focus({ preventScroll: true }), 50);
+    const phone = !inline && isPhone();
+    lockPageScroll(phone && open);
+    if (phone && open) fitToVisibleViewport();
+    // Na telefonie bez automatycznego kursora — klawiatura nie wyskakuje od razu po otwarciu.
+    if (open && !phone) setTimeout(() => (state.name ? input : nameInput).focus({ preventScroll: true }), 50);
+  }
+
+  // Telefon: okno czatu dopasowane do widocznej części ekranu (nad klawiaturą).
+  // visualViewport podaje wysokość i przesunięcie obszaru widocznego po otwarciu klawiatury.
+  function fitToVisibleViewport() {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    wrap.style.setProperty('--vv-h', `${Math.round(vv.height)}px`);
+    wrap.style.setProperty('--vv-top', `${Math.round(vv.offsetTop)}px`);
+  }
+  if (!inline && window.visualViewport) {
+    const onViewport = () => {
+      // Obrót / zmiana okna z telefonu na szerokie — odblokuj stronę.
+      if (!isPhone()) return lockPageScroll(false);
+      if (!state.open) return;
+      lockPageScroll(true);
+      fitToVisibleViewport();
+      // Ostatnia wiadomość i pole wpisywania zostają widoczne nad klawiaturą.
+      log.scrollTop = log.scrollHeight;
+    };
+    window.visualViewport.addEventListener('resize', onViewport);
+    window.visualViewport.addEventListener('scroll', onViewport);
   }
 
   // Czyści rozmowę i imię — przy następnym otwarciu czat zaczyna od ekranu powitalnego.
@@ -519,8 +525,7 @@ export function mountWidget(opts) {
   input.addEventListener('input', autoGrow);
   launcher.addEventListener('click', () => setOpen(!state.open));
   root.querySelectorAll('.minimize').forEach((b) => b.addEventListener('click', () => setOpen(false)));
-  root.querySelectorAll('.maximize').forEach((b) => b.addEventListener('click', () => setMaximized(!state.max)));
-  root.querySelectorAll('.close:not(.minimize):not(.maximize)').forEach((b) =>
+  root.querySelectorAll('.close:not(.minimize)').forEach((b) =>
     b.addEventListener('click', () => {
       resetConversation();
       setOpen(false);
@@ -531,7 +536,6 @@ export function mountWidget(opts) {
   });
 
   showScreen();
-  setMaximized(state.max);
   setOpen(inline ? true : state.open);
   // Podgląd w panelu: rozmowa startuje od razu (bez ekranu z imieniem), żeby widać było powitanie.
   if (opts.autoStartName && !state.name) startConversation(opts.autoStartName, false);
@@ -542,7 +546,10 @@ export function mountWidget(opts) {
     ask,
     // Czyści rozmowę i imię — wraca do ekranu powitalnego.
     reset: resetConversation,
-    destroy: () => host.remove(),
+    destroy: () => {
+      lockPageScroll(false);
+      host.remove();
+    },
   };
 }
 
@@ -629,6 +636,30 @@ export function tileIcon(svc) {
   const ico = el('span', 'tile-ico');
   ico.innerHTML = TILE_ICONS[svc] || ICON_GENERIC;
   return ico;
+}
+
+// Telefon (to samo kryterium co w CSS: czat na cały ekran).
+const PHONE_QUERY = '(max-width: 600px), (pointer: coarse) and (max-height: 500px)';
+const isPhone = () => window.matchMedia?.(PHONE_QUERY).matches ?? false;
+
+// Blokada przewijania strony pod otwartym czatem na telefonie (iOS: body position:fixed,
+// po zamknięciu strona wraca w to samo miejsce). Style strony przywracamy dokładnie.
+let pageLock = null;
+function lockPageScroll(lock) {
+  const body = document.body;
+  if (!body) return;
+  if (lock && !pageLock) {
+    pageLock = { y: window.scrollY, body: body.getAttribute('style'), html: document.documentElement.style.overflow };
+    document.documentElement.style.overflow = 'hidden';
+    Object.assign(body.style, { position: 'fixed', top: `-${pageLock.y}px`, left: '0', right: '0', width: '100%', overflow: 'hidden' });
+  } else if (!lock && pageLock) {
+    const { y, body: bodyStyle, html } = pageLock;
+    pageLock = null;
+    if (bodyStyle === null) body.removeAttribute('style');
+    else body.setAttribute('style', bodyStyle);
+    document.documentElement.style.overflow = html;
+    window.scrollTo({ top: y, left: 0, behavior: 'instant' }); // bez płynnego przewijania strony
+  }
 }
 
 // Cena w „pigułce”: „od” cieńszym pismem, kwota pogrubiona („od 79 zł”).
