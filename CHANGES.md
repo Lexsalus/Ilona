@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-06
 
+### 1.3.4
+- Dokumentacja: panel online (token GitHub), zachowanie okna czatu na komputerze i telefonie, pamięć podręczna, rozpoznawanie telefonu, nowe problemy i rozwiązania
+
 ### 1.3.3
 - „Umów wizytę”: ramka nigdy szersza niż okno czatu (także starsze Safari); bez :has() w stylach
 

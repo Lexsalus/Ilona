@@ -54,7 +54,7 @@ Po załadowaniu dostępny jest obiekt `window.LTChat`:
 
 | Metoda | Działanie |
 |---|---|
-| `LTChat.open()` / `LTChat.close()` | otwiera / zamyka okno czatu |
+| `LTChat.open()` / `LTChat.close()` | otwiera / zwija okno czatu (rozmowa zostaje — jak przycisk „_”) |
 | `LTChat.ask("tekst")` | wysyła pytanie w imieniu pacjenta (np. z przycisku „Ile kosztuje L4?”) |
 | `LTChat.reset()` | czyści rozmowę i wraca do ekranu powitalnego |
 
@@ -161,6 +161,9 @@ Po wgraniu przeglądarki pacjentów mogą przez chwilę używać starych plików
   - `img-src` — ten sam host oraz `data:` (logo/miniatura wgrane w panelu),
   - `connect-src` — host czatu (`settings.json`) i — jeśli używany — serwer panelu (`*.workers.dev`).
 - **CORS:** GitHub Pages wysyła `Access-Control-Allow-Origin: *`, więc moduły i `settings.json` ładują się z innej domeny bez konfiguracji. Na własnym serwerze w innej domenie niż strona — ustaw ten nagłówek dla plików czatu.
+- **Izolacja od stylów strony — szczegóły:** `:host { all: initial; }` zeruje style dziedziczone ze strony (czcionka, kolor, wysokość linii). Jedyna furtka to reguły strony trafiające wprost w kontener czatu (zwykły `<div>` na końcu `<body>`), np. `body > div { transform: … }` — wtedy okno „przypięte do ekranu” przypina się do tego elementu. Style czatu nie używają `:has()` (starsze iPhone'y, iOS < 15.4).
+- **Telefon:** czat dodaje klasę `.phone` (pełny ekran), gdy strona jest węższa niż 600 px **albo** urządzenie jest dotykowe, a krótszy bok fizycznego ekranu ≤ 600 px (`screen.width/height`) — dzięki temu iPhone obrócony poziomo, z pomniejszoną stroną („aA”) albo w trybie „wersja na komputer” też dostaje pełny ekran. Na telefonie: wysokość okna = widoczny obszar nad klawiaturą (`visualViewport` → zmienne `--vv-h`, `--vv-top`; bez skryptu `100dvh`, na iOS < 15.4 `100vh`), przewijanie strony pod czatem zablokowane (`body` `position: fixed`, pozycja przywracana po zamknięciu), bez automatycznego fokusu w polu (klawiatura nie wyskakuje sama), pola tekstowe 16 px (iOS nie przybliża strony).
+- **Pamięć podręczna:** GitHub Pages pozwala przeglądarkom trzymać pliki ok. 10 minut. Style czatu ładowane są z `widget.css?v=<wersja>`, więc po aktualizacji nie mieszają się stare style z nowym skryptem.
 - **Pamięć przeglądarki:** rozmowa w `sessionStorage` (klucz `lt-chat:bot`, znika po zamknięciu karty). Brak ciasteczek. Gdy pamięć jest zablokowana (tryb prywatny, iframe), czat działa dalej, tylko bez zapamiętywania rozmowy.
 - **Sieć:** bez serwera panelu i przy rejestracji wyłączonej czat po załadowaniu nie wysyła żadnych zapytań poza pobraniem `settings.json`.
 
@@ -193,7 +196,7 @@ chat/
   img/                      logo i miniatura konsultantki (domyślne)
 settings.json               ustawienia czatu (źródło „plik”) — format jak eksport z panelu
 panel/
-  index.html, admin.js, admin.css   panel administracyjny (jedna strona, zakładki)
+  index.html, admin.js, admin.css   panel administracyjny (jedna strona, zakładki); online: logowanie tokenem GitHub, zapis settings.json przez GitHub API (commit)
   labels.js                 nazwy tematów do panelu i raportów
   site-check.js             kontrola strony kliniki (linki, fakty, zmiany treści)
   server/worker.js          serwer panelu: Cloudflare Worker + D1 (ustawienia, rejestr, kontrola strony)
@@ -202,6 +205,7 @@ tools/
   test.js                   testy (npm test)
   check-site.js             kontrola strony z konsoli / GitHub Actions
   bump.js, check-version.js wersjonowanie
+  pack.js                   paczka czatu do wgrania na własny serwer (npm run paczka)
   d1-sqlite.js              atrapa Cloudflare D1 na SQLite (do testów serwera panelu)
 ```
 

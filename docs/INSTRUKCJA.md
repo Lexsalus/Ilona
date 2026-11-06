@@ -10,6 +10,7 @@ Dla osoby, która na co dzień opiekuje się czatem: zmienia ceny, teksty, komun
 4. [Czego czat nigdy nie robi](#4-czego-czat-nigdy-nie-robi)
 5. [Słowniczek](#5-słowniczek)
 6. [Pytania i odpowiedzi](#6-pytania-i-odpowiedzi)
+7. [Czat oczami pacjenta](#7-czat-oczami-pacjenta)
 
 ---
 
@@ -182,7 +183,7 @@ Własne odpowiedzi też powinny tego przestrzegać: pisz „do jakiego specjalis
 ## 6. Pytania i odpowiedzi
 
 **Czy zmiana w panelu od razu działa na stronie?**
-Przy serwerze panelu — po kliknięciu „Zapisz zmiany”, w ciągu ok. minuty. Przy pliku ustawień — po wysłaniu `settings.json` do repozytorium (ok. minuty po wysłaniu). W trybie lokalnym — po odświeżeniu strony testowej.
+Po kliknięciu „Zapisz zmiany” — po ok. 1–2 minutach (GitHub najpierw uruchamia testy, potem publikuje). Przeglądarki, także Twoja, mogą jeszcze do 10 minut pokazywać poprzednią wersję: odśwież stronę z pominięciem pamięci (Ctrl+F5, na Macu Cmd+Shift+R; na telefonie zamknij i otwórz kartę). Zmiany niezapisane widać od razu w podglądzie czatu w panelu.
 
 **Czy mogę coś zepsuć?**
 Panel sprawdza każde pole przed zapisem (np. odrzuca złe linki). Alarmu 112 nie da się wyłączyć — najwyżej pojedyncze słowa alarmowe (panel pyta o potwierdzenie). W najgorszym razie: „Przywróć domyślne” przy zmienionym elemencie, „Cofnij” przed zapisem, Import wcześniejszego eksportu albo „Dev reset”.
@@ -198,3 +199,27 @@ Nie. Imię pacjenta nie jest zapisywane, adresy IP też nie. Rozmowy są oznaczo
 
 **Jak przetestować coś, nie zmieniając strony kliniki?**
 Wprowadź zmiany **bez zapisywania** i sprawdź je w **podglądzie czatu** po prawej stronie panelu — pokazuje niezapisane zmiany. Nie pasuje? **Cofnij**. Strona kliniki zmienia się dopiero po „Zapisz zmiany”.
+
+---
+
+## 7. Czat oczami pacjenta
+
+**Komputer.** Okrągły przycisk w prawym dolnym rogu strony otwiera okno czatu. W nagłówku są dwa przyciski:
+
+| Przycisk | Działanie |
+|---|---|
+| **_** (minimalizuj) | Chowa czat do okrągłej ikony; rozmowa zostaje — po kliknięciu ikony wraca w tym samym miejscu. Tak samo działa klawisz **Esc**. |
+| **×** (zamknij) | Kończy rozmowę: czyści ją razem z imieniem i zamyka czat. Po ponownym otwarciu czat zaczyna od ekranu powitalnego. Bez pytania o potwierdzenie. |
+
+W niskim oknie przeglądarki (mały laptop, powiększona strona) czat zajmuje prawie całą wysokość i ma zwarty układ.
+
+**Telefon.** Czat otwiera się **na cały ekran** (bez przycisku powiększania) — także na iPhonie obróconym poziomo, z pomniejszoną stroną czy w trybie „wersja na komputer”. Dodatkowo:
+
+- strona kliniki pod czatem się nie przewija — przesuwanie palcem przewija tylko rozmowę; po zwinięciu czatu strona wraca w to samo miejsce,
+- klawiatura nie wyskakuje sama po otwarciu — dopiero po stuknięciu w pole; okno dopasowuje się wtedy do miejsca nad klawiaturą,
+- nagłówek, dymki i kafelki są nieco mniejsze, żeby na ekranie mieściło się więcej.
+
+**Dopisek na dole** „W nagłym zagrożeniu życia dzwoń **112 lub 999**” jest zawsze widoczny (numery na czerwono). Rozmowa jest pamiętana tylko do zamknięcia karty przeglądarki.
+
+**Gdy coś wygląda „po staremu”** po zmianie w panelu albo nowej wersji czatu — przeglądarka pacjenta może do 10 minut używać poprzedniej wersji. Wystarczy odczekać albo odświeżyć stronę z pominięciem pamięci.
+

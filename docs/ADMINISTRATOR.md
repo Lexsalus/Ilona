@@ -6,7 +6,7 @@ Dla osoby, która uruchamia panel, decyduje, gdzie są ustawienia, wdraża serwe
 
 1. [Jak to działa](#1-jak-to-działa)
 2. [Uruchomienie panelu](#2-uruchomienie-panelu)
-3. [Źródła ustawień: plik, serwer, tryb lokalny](#3-źródła-ustawień-plik-serwer-tryb-lokalny)
+3. [Źródła ustawień: GitHub, plik, serwer, tryb lokalny](#3-źródła-ustawień-github-plik-serwer-tryb-lokalny)
 4. [Serwer panelu (Cloudflare)](#4-serwer-panelu-cloudflare)
 5. [Bezpieczeństwo panelu](#5-bezpieczeństwo-panelu)
 6. [Rejestracja rozmów i RODO](#6-rejestracja-rozmów-i-rodo)
@@ -226,7 +226,11 @@ Ustawienia domyślne są zgodne ze specyfikacją czatu „Ilona” v1.1, z wyją
 |---|---|
 | Panel: „Nieprawidłowe hasło” | Hasło z `wrangler secret put ADMIN_PASSWORD`; po 10 próbach blokada na 15 min |
 | Panel: „Serwer nie odpowiada…” | Zły adres Workera albo zmienił się Twój IP przy włączonym `ADMIN_IPS` |
-| Czat nie widzi zmian z pliku | Czy `settings.json` został wysłany (`git push`) i czy publikacja w zakładce Actions się udała; potem Ctrl+F5 |
+| Panel: „Nieprawidłowy albo wygasły token GitHub” | Token wygasł albo został usunięty — utwórz nowy (INSTRUKCJA, punkt 1) |
+| Panel: „Token nie ma uprawnienia do zapisu” | W ustawieniach tokenu: repozytorium `Lexsalus/Ilona` i *Contents: Read and write* |
+| Panel: „Plik ustawień na GitHubie zmienił się w międzyczasie” | Ktoś zapisał z innego komputera — odśwież panel i wprowadź zmiany ponownie |
+| Czat nie widzi zmian z panelu / pliku | Zakładka Actions: czy publikacja po zapisie się udała (ok. 1–2 min). Przeglądarka może do 10 min pokazywać poprzednią wersję — Ctrl+F5 (Mac: Cmd+Shift+R), na telefonie zamknij i otwórz kartę |
+| Lokalnie: `git push` odrzucony („fetch first”) | W repozytorium jest nowszy zapis z panelu — `git pull --rebase`, potem `git push` |
 | Czat nie widzi zmian z serwera | Ustawienia są pamiętane do 60 s; sprawdź `data-panel` / `chat/config.js` i czy kliknięto „Zapisz zmiany” |
 | Czat zawsze odpowiada „Nie jestem pewna…” | Stara wersja w pamięci przeglądarki (Ctrl+F5) albo ustawienia trybu lokalnego w tej przeglądarce („Dev reset”) |
 | Brak pola zgody na ekranie powitalnym | Pojawia się tylko przy poziomie rejestracji 2 lub 3 |
