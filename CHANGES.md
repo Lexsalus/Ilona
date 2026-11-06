@@ -13,6 +13,9 @@ Zgodność wersji z tym plikiem sprawdza `npm run check` (także automatycznie p
 
 ## 2026-11-06
 
+### 1.3.5
+- Podgląd strony kliniki (demo/): pole daty w formularzu „Umów konsultację” nie wychodzi poza formularz na iPhonie
+
 ### 1.3.4
 - Dokumentacja: panel online (token GitHub), zachowanie okna czatu na komputerze i telefonie, pamięć podręczna, rozpoznawanie telefonu, nowe problemy i rozwiązania
 
